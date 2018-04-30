@@ -6,9 +6,6 @@
       <change type="NEW" beforePath="" afterPath="$USER_HOME$/prop/srcs/utils/cryptopia_api.py" />
       <change type="NEW" beforePath="" afterPath="$USER_HOME$/prop/srcs/utils/cryptopia_api_example.py" />
       <change type="NEW" beforePath="" afterPath="$USER_HOME$/prop/srcs/version1.0/mani1.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/execution/arb/cryptopiaAutoBuy.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/execution/cryptopiaAutoSell.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/information/scrapers/gdax_mo.py" />
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/BTC-DASH.txt" afterPath="" />
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/BTC-ETH.txt" afterPath="" />
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/BTC-GNT.txt" afterPath="" />
@@ -21,6 +18,7 @@
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/BTC_NEO.txt" afterPath="" />
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/BTC_SJCX.txt" afterPath="" />
       <change type="DELETED" beforePath="$USER_HOME$/prop/data/USDT_BTC.txt" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/execution/arb/cryptopiaAutoBuy.py" afterPath="$PROJECT_DIR$/execution/cryptopiaAutoBuy.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/data/BTC_DASH.txt" afterPath="$USER_HOME$/prop/data/BTC_DASH.txt" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/data/BTC_ETH.txt" afterPath="$USER_HOME$/prop/data/BTC_ETH.txt" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/data/BTC_GNT.txt" afterPath="$USER_HOME$/prop/data/BTC_GNT.txt" />
@@ -36,9 +34,6 @@
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/srcs/version1.0/cip2-mlsp4.py" afterPath="$USER_HOME$/prop/srcs/version1.0/cip2-mlsp4.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/srcs/version1.0/mlsp1.0.1.py" afterPath="$USER_HOME$/prop/srcs/version1.0/mlsp1.0.1.py" />
       <change type="MODIFICATION" beforePath="$USER_HOME$/prop/srcs/version1.0/mlsp3.py" afterPath="$USER_HOME$/prop/srcs/version1.0/mlsp3.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/execution/MM_SVM.py" afterPath="$PROJECT_DIR$/execution/MM_SVM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/execution/basic1.py" afterPath="$PROJECT_DIR$/execution/basic1.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/information/alerts/bookScanner1.py" afterPath="$PROJECT_DIR$/information/alerts/bookScanner1.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -100,7 +95,7 @@
             </entry>
           </file>
           <file leaf-file-name="cryptopiaAutoBuy.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/execution/arb/cryptopiaAutoBuy.py">
+            <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoBuy.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="443">
                   <caret line="248" column="18" lean-forward="true" selection-start-line="248" selection-start-column="18" selection-end-line="248" selection-end-column="18" />
@@ -273,6 +268,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/execution" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -403,9 +403,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="53" width="1680" height="947" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15773809" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15773809" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -821,7 +820,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/execution/arb/cryptopiaAutoBuy.py">
+    <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoBuy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="443">
           <caret line="248" column="18" lean-forward="true" selection-start-line="248" selection-start-column="18" selection-end-line="248" selection-end-column="18" />
