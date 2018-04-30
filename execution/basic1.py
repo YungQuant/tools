@@ -119,7 +119,7 @@ def my_buy(ticker, amount, type):
     if type == 'ask':
         price = b.get_ticker(ticker)['result']['Ask']
         amount /= price
-        b.buy_limit(ticker, amount, price)
+        b.buy_market(ticker, amount)
         print("BUY ticker, price, amount", ticker, price, amount)
 
     if type == 'bid':
@@ -145,7 +145,7 @@ def my_sell(ticker, amount, type):
     if type == 'bid':
         price = b.get_ticker(ticker)['result']['Bid']
         amount /= price
-        b.sell_limit(ticker, amount, price)
+        b.sell_market(ticker, amount)
         print("SELL ticker, price, amount", ticker, price, amount)
 
     if type == 'mid':
@@ -188,7 +188,7 @@ def OLD_auto_buy(ticker, amount, time_limit=10):
     adj_stddev_increment = stddev / adj_time_limit
     while 1:
         time_cnt += 1
-        print("Time Count:", time_cnt)
+        print("OLD_auto_buy Time Count:", time_cnt)
         buy_book = b.get_orderbook(ticker, 'buy', 30)['result']
         sell_book = b.get_orderbook(ticker, 'sell', 30)['result']
         for i in range(30):
@@ -239,7 +239,7 @@ def OLD_auto_sell(ticker, amount, time_limit=10):
     adj_stddev_increment = stddev / adj_time_limit
     while 1:
         time_cnt += 1
-        print("Time Count:", time_cnt)
+        print("OLD_auto_sell Time Count:", time_cnt)
         buy_book = b.get_orderbook(ticker, 'buy', 30)['result']
         sell_book = b.get_orderbook(ticker, 'sell', 30)['result']
         for i in range(30):
@@ -287,7 +287,7 @@ def liquidate(ticker):
         clear_orders('BTC-' + ticker)
         bal = float(b.get_balance(ticker)['result']['Balance'])
         time_cnt += 1
-        print("Time Count (10 seconds / cnt):", time_cnt)
+        print("Liquidate Time Count (10 seconds / cnt):", time_cnt)
         print("Balance:", bal, "Goal Balance:", goal_bal)
         my_sell('BTC-' + ticker, (bal - goal_bal) * price, type='ask')
         time.sleep(10)
@@ -306,13 +306,16 @@ def auto_ask(ticker, amount):
             price = np.mean([float(tick['Ask']), float(tick['Bid'])])
             bal = float(b.get_balance(ticker)['result']['Balance'])
             clear_orders('BTC-' + ticker)
-            if ((bal - goal_bal) * price) < 0.1:
+            if ((bal - goal_bal) * price) < 0.001:
+                print("insufficient balance")
+                time.sleep(60)
+            elif ((bal - goal_bal) * price) < 0.1:
                 my_sell('BTC-' + ticker, ((bal - goal_bal) * price), type='ask')
             else:
-                my_sell('BTC-' + ticker, 0.1, type='ask')
+                my_sell('BTC-' + ticker, 0.025, type='ask')
             time_cnt += 1
-            print("Time Count (15 seconds / cnt):", time_cnt)
-            print("Balance:", bal, "Goal Balance:", goal_bal)
+            print("AUTOASK Time Count (15 seconds / cnt):", time_cnt)
+            print("Starting Balance:", start_bal, "Balance:", bal, "Goal Balance:", goal_bal)
             print("\n")
             time.sleep(15)
         except:
@@ -333,12 +336,12 @@ def auto_bid(ticker, amount):
             if (goal_bal - bal) * price < 0.1:
                 my_buy('BTC-' + ticker, (goal_bal - bal) * price, type='bid')
             else:
-                my_buy('BTC-' + ticker, 0.1, type='bid')
+                my_buy('BTC-' + ticker, 0.05, type='bid')
             time_cnt += 1
-            print("Time Count:", time_cnt, "(15 seconds / cnt)")
+            print("AUTOBID Time Count:", time_cnt, "(15 seconds / cnt)")
             print("Balance:", bal, "Goal Balance:", goal_bal)
             print("\n")
-            time.sleep(15)
+            time.sleep(10)
         except:
             print("AUTO_BID FAILED ON TIME_CNT:", time_cnt, "(15 seconds / cnt)")
 
@@ -437,6 +440,7 @@ def auto_passive_sell(ticker, amount, target, stop, alerts = 0):
     price = np.mean([float(tick['Ask']), float(tick['Bid'])])
     org_bal = float(b.get_balance(ticker)['result']['Balance'])
     goal_bal = org_bal - (amount / price)
+    if goal_bal < 0: goal_bal = 0
     bal = org_bal
     time_cnt = 0
     while bal > goal_bal + (org_bal * 0.001):
@@ -527,6 +531,7 @@ def auto_aggresive_sell(ticker, amount, alerts = 0):
     price = np.mean([float(tick['Ask']), float(tick['Bid'])])
     org_bal = float(b.get_balance(ticker)['result']['Balance'])
     goal_bal = org_bal - (amount / price)
+    if goal_bal < 0: goal_bal = 0
     bal = org_bal
     time_cnt = 0
     while bal > goal_bal + (org_bal * 0.001):
@@ -588,7 +593,8 @@ def auto_aggresive_buy(ticker, amount, alerts = 0):
 
 
 
-auto_passive_buy("EMC", 0.05, 0.00030000, 0.00010000, alerts=1)
+#auto_passive_buy("EMC", 0.05, 0.00030000, 0.00010000, alerts=1)
+print(auto_ask("QTUM", 1))
 
 ################### VV TO-DO VV ####################
     #trailing stops

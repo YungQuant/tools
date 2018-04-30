@@ -322,8 +322,8 @@ def plot2(a, b):
 
 
 b = Bittrex('4d314f07d8fb4c6a89622846b30e918e', 'e67bdd178aba478d954f54b6e5afccf7')
-ticker = 'BTC-BCC'; LOOKBACK = 2; time_cnt = 0; DEPTH = 2;
-
+ticker = 'BTC-BCC'; LOOKBACK = 5; DEPTH = 10; MODULO = 60;
+time_cnt = 0
 HIST_BID_BOOK = []; HIST_ASK_BOOK = []; HIST_PRICE = [];
 
 while 1:
@@ -332,18 +332,18 @@ while 1:
     sell_book = b.get_orderbook(ticker, 'sell', DEPTH)#['result']
 
     BB_array, SB_array, price = books_to_arrays(buy_book, sell_book, DEPTH)
-    print("DEBUG BB_array, SB_array, price:", BB_array, SB_array, price)
-    print("DEBUG HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE:", HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE)
+    #print("DEBUG BB_array, SB_array, price:", BB_array, SB_array, price)
+    #print("DEBUG HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE:", HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE)
 
-    if time_cnt % 100 == 0 and time_cnt > 0:
+    if time_cnt > MODULO:#0 and time_cnt % MODULO == 0:
         #scaler = MinMaxScaler(feature_range=(-1, 1))
         #scaler = StandardScaler()
         #print("DEBUG HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE:", HIST_BID_BOOK, HIST_ASK_BOOK, HIST_PRICE)
-        X, Y = create_binary_orderbook_training_set(HIST_BID_BOOK[:-10], HIST_ASK_BOOK[:-10], HIST_PRICE[:-10], LOOKBACK)
+        X, Y = create_binary_orderbook_training_set(HIST_BID_BOOK[:-LOOKBACK], HIST_ASK_BOOK[:-LOOKBACK], HIST_PRICE[:-LOOKBACK], LOOKBACK)
         #print("Post-Creation DEBUG X, Y:", X, Y)
         X = np.reshape(X, [X.shape[0], X.shape[1] * DEPTH])
         #scaler = MinMaxScaler().partial_fit(X)
-        print("Post-Shaping DEBUG X, Y:", X, Y)
+        #print("Post-Shaping DEBUG X, Y:", X, Y)
         #X = scaler.fit_transform(X)
         #print("Post-Scaling DEBUG X:", X)
         print("Formatted data, generating model.")
@@ -352,19 +352,19 @@ while 1:
         R = SVC()
         print("Fitting model.")
         print(R.fit(X, Y))
-        x = HIST_BID_BOOK[-1] + HIST_ASK_BOOK[-1]
-        print("Post-Creation DEBUG x:", x)
-        #np.reshape(x, [x.shape[0], x.shape[1] * DEPTH])
-        #print("Post-Shaping DEBUG x, y:", x, y)
+        x = HIST_BID_BOOK[-LOOKBACK:] + HIST_ASK_BOOK[-LOOKBACK:]
+        #print("Post-Creation DEBUG x:", x)
+        x = np.reshape(x, [1, (DEPTH * LOOKBACK) * 2])
+        #print("Post-Shaping DEBUG x:", x)
         print("Predicting based on unseen data:")
         pred = R.predict(x)
         #err = abs(pred - y)
-        print("PREDICTED:", pred, "PRICES[-5:]", HIST_PRICE[-1:])#"ERROR:", err)
+        print("PREDICTED:", pred, "PRICES[-5:]", HIST_PRICE[-5:])#"ERROR:", err)
 
 
-    print("time_cnt:", time_cnt, "(1 second / cnt)\n")
+    print("time_cnt:", time_cnt, "(1 second / cnt) MODULO:", MODULO, "\n")
     HIST_BID_BOOK.append(BB_array)
     HIST_ASK_BOOK.append(SB_array)
     HIST_PRICE.append(price)
     time_cnt += 1
-    #time.sleep(1)
+    time.sleep(1)

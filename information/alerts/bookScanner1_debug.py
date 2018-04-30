@@ -195,23 +195,19 @@ def bittrex_price_alerts(cryptos, prices):
 
 
 def gdax_price_alerts(pairs, prices):
-    while 1:
-        try:
-            for i in range(len(pairs)):
-                res = lite_scan_g(pairs[i])
-                print(pairs[i], res)
-                p = np.mean([float(res['bids'][0][0]), float(res['asks'][0][0])])
-                if p > prices[i][0]:
-                    alert_duncan(str(pairs[i]) + str(p))
-                elif p < prices[i][1]:
-                    alert_duncan(str(pairs[i]) + str(p))
+    for i in range(len(pairs)):
+        res = lite_scan_g(pairs[i])
+        print(pairs[i], res)
+        p = np.mean([float(res['bids'][0][0]), float(res['asks'][0][0])])
+        if p > prices[i][0]:
+            alert_duncan(str(pairs[i]) + str(p))
+        elif p < prices[i][1]:
+            alert_duncan(str(pairs[i]) + str(p))
 
-            print("Sleeping for 10 seconds...")
-            time.sleep(10)
+    print("Sleeping for 10 seconds...")
+    time.sleep(10)
 
-        except:
-            print("Sorry, I've broken.")
-            time.sleep(5)
+
 
 
 cryptos = ['NEO', 'GNT', 'ZEC', 'XMR', 'XEM', 'DASH', 'MAID', 'STORJ', 'XRP', 'LTC', 'ETH']
