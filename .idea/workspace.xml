@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b456ee-4934-4aaf-a4c1-0d1e8e9573c3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/execution/cryptopiaAutoBuy.py" afterPath="$PROJECT_DIR$/execution/cryptopiaAutoBuy.py" />
+      <change type="MODIFICATION" beforePath="$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py" afterPath="$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py" />
+      <change type="MODIFICATION" beforePath="$USER_HOME$/prop/srcs/version1.0/mani1.py" afterPath="$USER_HOME$/prop/srcs/version1.0/mani1.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/execution/cryptopiaAutoSell.py" afterPath="$PROJECT_DIR$/execution/cryptopiaAutoSell.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +33,8 @@
           <file leaf-file-name="mani1.py" pinned="false" current-in-tab="false">
             <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-2625">
-                  <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
+                <state relative-caret-position="360">
+                  <caret line="246" column="38" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="254" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -40,11 +42,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="cryptopiaScraper1.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="cryptopiaScraper1.py" pinned="false" current-in-tab="true">
             <entry file="file://$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-2625">
-                  <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
+                <state relative-caret-position="429">
+                  <caret line="259" column="5" lean-forward="false" selection-start-line="259" selection-start-column="5" selection-end-line="259" selection-end-column="5" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -52,11 +54,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="cryptopiaAutoSell.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="cryptopiaAutoSell.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoSell.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="413">
-                  <caret line="262" column="18" lean-forward="true" selection-start-line="262" selection-start-column="18" selection-end-line="262" selection-end-column="18" />
+                <state relative-caret-position="263">
+                  <caret line="255" column="105" lean-forward="true" selection-start-line="255" selection-start-column="4" selection-end-line="255" selection-end-column="105" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -68,7 +70,7 @@
             <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoBuy.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="373">
-                  <caret line="246" column="35" lean-forward="true" selection-start-line="243" selection-start-column="3" selection-end-line="246" selection-end-column="35" />
+                  <caret line="246" column="35" lean-forward="false" selection-start-line="243" selection-start-column="3" selection-end-line="246" selection-end-column="35" />
                   <folding>
                     <element signature="e#0#11#0" expanded="true" />
                   </folding>
@@ -136,7 +138,7 @@
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$USER_HOME$/prop" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -158,12 +160,12 @@
         <option value="$USER_HOME$/prop/srcs/utils/cryptopia_api_example.py" />
         <option value="$USER_HOME$/prop/srcs/utils/cryptopiaScraper.py" />
         <option value="$PROJECT_DIR$/execution/cryptopiaTools1.py" />
-        <option value="$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py" />
-        <option value="$USER_HOME$/prop/srcs/version1.0/mani1.py" />
         <option value="$PROJECT_DIR$/execution/basic1.py" />
         <option value="$PROJECT_DIR$/execution/arb/cryptopiaAutoBuy.py" />
         <option value="$PROJECT_DIR$/execution/cryptopiaAutoBuy.py" />
         <option value="$PROJECT_DIR$/execution/cryptopiaAutoSell.py" />
+        <option value="$USER_HOME$/prop/srcs/version1.0/mani1.py" />
+        <option value="$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py" />
       </list>
     </option>
   </component>
@@ -256,7 +258,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.cryptopiaAutoSell">
+  <component name="RunManager" selected="Python.cryptopiaScraper1">
     <configuration name="basic1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -308,7 +310,7 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="cryptopia_api_example" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="cryptopiaScraper1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -320,7 +322,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="prop" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/prop/srcs/utils/cryptopia_api_example.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -344,18 +346,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.basic1" />
-      <item index="1" class="java.lang.String" itemvalue="Python.cryptopia_api_example" />
-      <item index="2" class="java.lang.String" itemvalue="Python.mani1" />
-      <item index="3" class="java.lang.String" itemvalue="Python.cryptopiaAutoSell" />
-      <item index="4" class="java.lang.String" itemvalue="Python.cryptopiaAutoBuy" />
+      <item index="1" class="java.lang.String" itemvalue="Python.mani1" />
+      <item index="2" class="java.lang.String" itemvalue="Python.cryptopiaAutoSell" />
+      <item index="3" class="java.lang.String" itemvalue="Python.cryptopiaAutoBuy" />
+      <item index="4" class="java.lang.String" itemvalue="Python.cryptopiaScraper1" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.cryptopiaAutoSell" />
-        <item index="1" class="java.lang.String" itemvalue="Python.cryptopiaAutoBuy" />
-        <item index="2" class="java.lang.String" itemvalue="Python.basic1" />
-        <item index="3" class="java.lang.String" itemvalue="Python.mani1" />
-        <item index="4" class="java.lang.String" itemvalue="Python.cryptopia_api_example" />
+        <item index="0" class="java.lang.String" itemvalue="Python.cryptopiaScraper1" />
+        <item index="1" class="java.lang.String" itemvalue="Python.cryptopiaAutoSell" />
+        <item index="2" class="java.lang.String" itemvalue="Python.cryptopiaAutoBuy" />
+        <item index="3" class="java.lang.String" itemvalue="Python.basic1" />
+        <item index="4" class="java.lang.String" itemvalue="Python.mani1" />
       </list>
     </recent_temporary>
   </component>
@@ -711,7 +713,7 @@
         <state relative-caret-position="3005">
           <caret line="342" column="0" lean-forward="true" selection-start-line="342" selection-start-column="0" selection-end-line="342" selection-end-column="0" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -742,26 +744,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2625">
-          <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2625">
-          <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="46" selection-end-line="47" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/execution/basic1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3815">
@@ -785,7 +767,17 @@
     <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoBuy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="373">
-          <caret line="246" column="35" lean-forward="true" selection-start-line="243" selection-start-column="3" selection-end-line="246" selection-end-column="35" />
+          <caret line="246" column="35" lean-forward="false" selection-start-line="243" selection-start-column="3" selection-end-line="246" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="246" column="38" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="254" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
@@ -794,8 +786,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoSell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="262" column="18" lean-forward="true" selection-start-line="262" selection-start-column="18" selection-end-line="262" selection-end-column="18" />
+        <state relative-caret-position="263">
+          <caret line="255" column="105" lean-forward="true" selection-start-line="255" selection-start-column="4" selection-end-line="255" selection-end-column="105" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/utils/cryptopiaScraper1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="259" column="5" lean-forward="false" selection-start-line="259" selection-start-column="5" selection-end-line="259" selection-end-column="5" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>

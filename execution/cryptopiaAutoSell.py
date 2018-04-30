@@ -218,7 +218,7 @@ def alert_duncan(message):
 def clear_orders(ticker):
     openOrders = api.get_openorders(ticker)
     print("Clearing Open Orders:", openOrders)
-    if openOrders[1] == None:
+    if openOrders[0] == None:
         return
     orderIds, tradeTypes, tradePairIds = [], [], []
     for i, order in enumerate(openOrders[0]):
@@ -231,11 +231,13 @@ def clear_orders(ticker):
 
 def force_sell(ticker):
     openOrders = api.get_openorders(ticker)
-    if openOrders[1] == None:
+    print("DEBUG force sell open orders:", openOrders)
+    if openOrders[0] == None:
         return
+    mrktInfo = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
     bid, ask = mrktInfo[0][0]['Buy'][0]['Price'], mrktInfo[0][0]['Sell'][0]['Price']
     print("FORCE SELLING Bid:", bid, "Ask:", ask)
-    print(api.submit_trade(ticker, 'sell', bid, 5))
+    print(api.submit_trade(ticker, 'sell', bid, 20))
 
 initTimeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 ticker = "BITG_BTC"
