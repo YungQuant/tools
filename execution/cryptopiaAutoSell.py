@@ -219,7 +219,7 @@ def clear_orders(ticker):
     openOrders = api.get_openorders(ticker)
     print("Clearing Open Orders:", openOrders)
     if openOrders[0] == None:
-        return
+        return "empty"
     orderIds, tradeTypes, tradePairIds = [], [], []
     for i, order in enumerate(openOrders[0]):
         orderIds.append(order['OrderId'])
@@ -233,11 +233,11 @@ def force_sell(ticker):
     openOrders = api.get_openorders(ticker)
     print("DEBUG force sell open orders:", openOrders)
     if openOrders[0] == None:
-        return
+        return "empty"
     mrktInfo = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
     bid, ask = mrktInfo[0][0]['Buy'][0]['Price'], mrktInfo[0][0]['Sell'][0]['Price']
     print("FORCE SELLING Bid:", bid, "Ask:", ask)
-    print(api.submit_trade(ticker, 'sell', bid, 20))
+    print(api.submit_trade(ticker, 'sell', bid, 10))
 
 initTimeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 ticker = "BITG_BTC"
@@ -250,17 +250,16 @@ while(1):
     api = Api(key="3f8b7c40eeb04befb8d0cca362d8c017", secret="hws7Dbh/Nu1nHsRljYwtrdFydzmib6ihfTu2bva0xiE=")
     print("Using:" + ticker + "\n" + file + "\n")
     print("BTC Avail./Total:", api.get_balance("BTC")[0]['Available'], api.get_balance("BTC")[0]['Total'], ticker[:4], "Avail./Total:", api.get_balance(ticker[:4])[0]['Available'], "/", api.get_balance(ticker[:4])[0]['Total'], "\n")
-    #clear_orders(ticker)
-    force_sell(ticker)
-    clear_orders(ticker1)
+    if clear_orders(ticker1) != "empty":
+        force_sell(ticker)
     mrktInfo = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
     # print(mrktInfo[0][0]['Buy'][0]['Price'])
     bid, ask = mrktInfo[0][0]['Buy'][0]['Price'], mrktInfo[0][0]['Sell'][0]['Price']
     print("Bid:", bid, "Ask:", ask)
     print("Submitting Trade on", ticker)
-    print(api.submit_trade(ticker, "sell", ask, 5))
+    print(api.submit_trade(ticker, "sell", float(ask) - 0.00000001, 10))
     print("Open Orders:", api.get_openorders(ticker))
     timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
     print("AutoSell end: " + timeStr + "\n||||||||||||||||||||||||||||||||||||||||||||||||||||||")
-    time.sleep(30)
+    time.sleep(5)
 

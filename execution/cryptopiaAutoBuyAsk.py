@@ -249,11 +249,11 @@ def force_buy(ticker):
     print("FORCE Buying Bid:", bid, "Ask:", ask)
     print(api.submit_trade(ticker, 'buy', ask, 5))
 
-api = Api(key="3f8b7c40eeb04befb8d0cca362d8c017", secret="hws7Dbh/Nu1nHsRljYwtrdFydzmib6ihfTu2bva0xiE=")
 initTimeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 ticker = "BITG_BTC"
 ticker1 = "BITG/BTC"
 file = "../../../data" + ticker[0] + "_cryptopiaData/"
+api = Api(key="3f8b7c40eeb04befb8d0cca362d8c017", secret="hws7Dbh/Nu1nHsRljYwtrdFydzmib6ihfTu2bva0xiE=")
 
 while(1):
     try:
@@ -266,18 +266,22 @@ while(1):
         clear_orders(ticker1)
         mrktInfo = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
         # print(mrktInfo[0][0]['Buy'][0]['Price'])
+        #VVV MAKE THIS NOT QUERY ALLLLLL THE DATA VVV
         bid, ask = mrktInfo[0][0]['Buy'][0]['Price'], mrktInfo[0][0]['Sell'][0]['Price']
-        print("Bid:", bid, "Ask:", ask)
-        print("Submitting Trade on", ticker)
-        print(api.submit_trade(ticker, "buy", float(bid), np.random.uniform(1, 2)))
-
-        # print("Submitting MedianTrade on", ticker)
-        # print(api.submit_trade(ticker, "buy", np.mean([float(ask), float(bid)]), 2))
-
+        spread = ask - bid
+        spreadPercent = spread / bid
+        print("Bid:", bid, "Ask:", ask, "Spread:", spread, "/", spreadPercent, "%")
+        if spreadPercent > 0.000002:
+            buySize = np.random.uniform(1, 2)
+            print("Buying {} {} at ASK".format(buySize, ticker))
+            print(api.submit_trade(ticker, "buy", float(ask), buySize))
         print("Open Orders:", api.get_openorders(ticker))
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+        slpTime = np.random.randint(60, 120)
+        print("sleeping for: {} seconds".format(slpTime))
         print("AutoBuy end: " + timeStr + "\n||||||||||||||||||||||||||||||||||||||||||||||||||||||")
-        time.sleep(30)
+        time.sleep(slpTime)
     except:
-        print("FUUUUUUUUUU")
+        print("FUUUUUUUUCK")
+
 
