@@ -248,18 +248,30 @@ while(1):
     timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
     print("|||||||||||||||||||||||||||||||||||||||||||||||||||||||\nAutoSell start:" + timeStr)
     api = Api(key="3f8b7c40eeb04befb8d0cca362d8c017", secret="hws7Dbh/Nu1nHsRljYwtrdFydzmib6ihfTu2bva0xiE=")
-    print("Using:" + ticker + "\n" + file + "\n")
+    print("Using:" + ticker + "\n" + file)
     print("BTC Avail./Total:", api.get_balance("BTC")[0]['Available'], api.get_balance("BTC")[0]['Total'], ticker[:4], "Avail./Total:", api.get_balance(ticker[:4])[0]['Available'], "/", api.get_balance(ticker[:4])[0]['Total'], "\n")
-    if clear_orders(ticker1) != "empty":
-        force_sell(ticker)
     mrktInfo = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
+    # VVV FOR AVG SELL VOL FEATURE VVV
+    orderbook_depth = 5
+    dataset = api.api_query(feature_requested="GetMarketOrderGroups", get_parameters={'market': ticker})
+    buys = dataset[0][0]['Buy']
+    sells = dataset[0][0]['Sell']
+    order_size = np.mean([order['Volume'] for order in sells[:orderbook_depth]])
+    print("avg sell vol", order_size)
+    # ^^^ FOR AVG SELL VOL FEATURE ^^^
+    #order_size = 10
     # print(mrktInfo[0][0]['Buy'][0]['Price'])
     bid, ask = mrktInfo[0][0]['Buy'][0]['Price'], mrktInfo[0][0]['Sell'][0]['Price']
+    #order_price = float(ask) - 0.00000001
+    order_price = np.mean([bid, ask])
     print("Bid:", bid, "Ask:", ask)
+    if clear_orders(ticker1) != "empty":
+        #force_sell(ticker)
+        pass
     print("Submitting Trade on", ticker)
-    print(api.submit_trade(ticker, "sell", float(ask) - 0.00000001, 10))
+    print(api.submit_trade(ticker, "sell", order_price, order_size))
     print("Open Orders:", api.get_openorders(ticker))
     timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
     print("AutoSell end: " + timeStr + "\n||||||||||||||||||||||||||||||||||||||||||||||||||||||")
-    time.sleep(5)
+    #time.sleep(5)
 

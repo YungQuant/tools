@@ -333,15 +333,15 @@ def auto_bid(ticker, amount):
             price = np.mean([float(tick['Ask']), float(tick['Bid'])])
             bal = float(b.get_balance(ticker)['result']['Balance'])
             clear_orders('BTC-' + ticker)
-            if (goal_bal - bal) * price < 0.1:
-                my_buy('BTC-' + ticker, (goal_bal - bal) * price, type='bid')
+            if (goal_bal - bal) * price < 0.05:
+                my_buy('BTC-' + ticker, ((goal_bal - bal) * price) * 0.99, type='bid')
             else:
                 my_buy('BTC-' + ticker, 0.05, type='bid')
             time_cnt += 1
-            print("AUTOBID Time Count:", time_cnt, "(15 seconds / cnt)")
+            print("AUTOBID Time Count:", time_cnt, "(30 seconds / cnt)")
             print("Balance:", bal, "Goal Balance:", goal_bal)
             print("\n")
-            time.sleep(10)
+            time.sleep(30)
         except:
             print("AUTO_BID FAILED ON TIME_CNT:", time_cnt, "(15 seconds / cnt)")
 
@@ -594,7 +594,7 @@ def auto_aggresive_buy(ticker, amount, alerts = 0):
 
 
 #auto_passive_buy("EMC", 0.05, 0.00030000, 0.00010000, alerts=1)
-print(auto_ask("QTUM", 1))
+print(auto_bid("XMR", 0.743))
 
 ################### VV TO-DO VV ####################
     #trailing stops
