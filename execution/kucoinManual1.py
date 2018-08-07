@@ -25,9 +25,12 @@ except ImportError:
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
+# client = Client(
+#     api_key= '5b579193857b873dcbd2eceb',
+#     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
 client = Client(
-    api_key= '5b579193857b873dcbd2eceb',
-    api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
+    api_key= '5b648d9908d8b114d114636f',
+    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 def getImpact(buys, sells, size=1.0):
     bidVol = 0
@@ -67,31 +70,24 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity = args[1], float(args[2])
-#ticker, quantity = "OMX-BTC", 1
-sQuantity = quantity
+ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
+#ticker, type, vol, price = "OMX-BTC", "SELL", .25, 0.00000100
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
-while(1):
-    try:
-        print("Kucoin AutoAsk Version 1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
-        balances = filterBalances(client.get_all_balances())
-        print("balances:", balances)
-        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        print("starttime:", starttime, "time:", timeStr)
-        midpoints = []
-        orders = client.get_order_book(ticker, limit=99999)
-        print(client.cancel_all_orders(ticker))
+print("Kucoin Manual Version 1 -yungquant")
+balances = filterBalances(client.get_all_balances())
+print("balances:", balances)
+timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+orders = client.get_order_book(ticker, limit=99999)
+midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 
-        avgVol = np.mean([float(order[-1]) for order in orders['SELL'][:10]])
-        print("client.create_sell_order(", ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0]))), ")")
-        print(client.create_sell_order(ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0])))))
+avgVol = vol
+if type == "SELL":
+    print("client.create_sell_order(", ticker, str(price), str(avgVol / price)[:5], ")")
+    print(client.create_sell_order(ticker, str(price), str(avgVol / price)[:5]))
+elif type == "BUY":
+    print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:5], ")")
+    print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:5]))
 
-        timeCnt += 1
-        print("timeCnt:", timeCnt, "\n")
-        time.sleep(60)
-    except:
-        print("FUUUUUUUUUUCK",  sys.exc_info())
 

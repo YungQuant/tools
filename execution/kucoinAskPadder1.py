@@ -21,7 +21,7 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
 
-
+import kucoin
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
@@ -59,39 +59,44 @@ def getImpact(buys, sells, size=1.0):
     return bidImpacts, askImpacts
 
 def filterBalances(balances):
-    retBals = {}
+    retBals = []
     for i in range(len(balances)):
         if balances[i]['balance'] != 0:
-            retBals[balances[i]['coinType']] = balances[i]['balance']
+            retBals.append(balances[i]['coinType'])
+            retBals.append(balances[i]['balance'])
     return retBals
 
 args = sys.argv
 
-ticker, quantity = args[1], float(args[2])
-#ticker, quantity = "OMX-BTC", 1
-sQuantity = quantity
-timeCnt = 0
-starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+#ticker, depth, mtu = args[1], float(args[2]), float(args[3])
+ticker, depth, mtu = "OMX-ETH", 50, 0.0000001
+
+
+print("Kucoin Ask Padder Version 1 -yungquant")
+print("Ticker:", ticker, "depth:", depth, "mtu:", mtu)
+timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+orders = client.get_order_book(ticker, limit=99999)
+print("balances:", filterBalances(client.get_all_balances()))
+print("time:", timeStr)
+bi, ai = 0, 0
 
 while(1):
     try:
-        print("Kucoin AutoAsk Version 1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
-        balances = filterBalances(client.get_all_balances())
-        print("balances:", balances)
-        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        print("starttime:", starttime, "time:", timeStr)
-        midpoints = []
-        orders = client.get_order_book(ticker, limit=99999)
-        print(client.cancel_all_orders(ticker))
+        ps = [order[0] for order in orders['SELL']]
+        for i in range(1, depth):
+            ords = str(np.random.uniform(2, 5))[:4]
+            ordp = ps[0] + (i * mtu)
+            if ordp not in ps:
+                print("client.create_sell_order(", ticker, str(ordp),
+                      ords, ")")
+                print(client.create_sell_order(ticker, str(ordp),
+                                              ords))
+                # time.sleep(1)
+            if ordp <= ps[0]:
+              exit(code=0)
+        exit(code=0)
 
-        avgVol = np.mean([float(order[-1]) for order in orders['SELL'][:10]])
-        print("client.create_sell_order(", ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0]))), ")")
-        print(client.create_sell_order(ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0])))))
+    except kucoin.exceptions.KucoinAPIException as e:
+        print("FUUUUUUUCK", e)
 
-        timeCnt += 1
-        print("timeCnt:", timeCnt, "\n")
-        time.sleep(60)
-    except:
-        print("FUUUUUUUUUUCK",  sys.exc_info())
 

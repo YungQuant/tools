@@ -21,13 +21,16 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
 
-import kucoin
+
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
+# client = Client(
+#     api_key= '5b579193857b873dcbd2eceb',
+#     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
 client = Client(
-    api_key= '5b579193857b873dcbd2eceb',
-    api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
+    api_key= '5b648d9908d8b114d114636f',
+    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 def getImpact(buys, sells, size=1.0):
     bidVol = 0
@@ -59,40 +62,29 @@ def getImpact(buys, sells, size=1.0):
     return bidImpacts, askImpacts
 
 def filterBalances(balances):
-    retBals = []
+    retBals = {}
     for i in range(len(balances)):
         if balances[i]['balance'] != 0:
-            retBals.append(balances[i]['coinType'])
-            retBals.append(balances[i]['balance'])
+            retBals[balances[i]['coinType']] = balances[i]['balance']
     return retBals
 
 args = sys.argv
 
-#ticker, quantity = args[1], float(args[2])
-ticker, quantity = "OMX-ETH", 1
-sQuantity = quantity
+#ticker = args[1]
+ticker = "OMX-BTC"
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
-while(1):
-    try:
-        print("Kucoin AutoBuy Version 1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
-        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        print("balances:", filterBalances(client.get_all_balances()))
-        print("starttime:", starttime, "time:", timeStr)
-        midpoints = []
-        orders = client.get_order_book(ticker, limit=99999)
-        print("client.cancel_all_orders(ticker)")
-        print(client.cancel_all_orders(ticker))
 
-        avgVol = np.mean([float(order[-1]) for order in orders['BUY'][:10]])
-        print("client.create_buy_order(", ticker, str(float(orders['BUY'][0][0]) * 1.00001), str(np.floor(avgVol / float(orders['BUY'][0][0]))), ")")
-        print(client.create_buy_order(ticker, str(float(orders['BUY'][0][0]) * 1.00001), (np.floor(avgVol / float(orders['BUY'][0][0])))))
+print("Kucoin Cancel Version 1 -yungquant")
+print("Ticker:", ticker)
+balances = filterBalances(client.get_all_balances())
+print("balances:", balances)
+timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+orders = client.get_order_book(ticker, limit=99999)
+midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
+print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
+print("client.cancel_all_orders(ticker)")
+print(client.cancel_all_orders(ticker))
 
-        timeCnt += 1
-        print("timeCnt:", timeCnt, "\n")
-        time.sleep(30)
-    except kucoin.exceptions.KucoinAPIException as e:
-        print("FUUUUUUUUUUCK",  e)
 
