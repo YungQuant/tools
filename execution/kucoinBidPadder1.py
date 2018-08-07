@@ -25,9 +25,12 @@ import kucoin
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
+# client = Client(
+#     api_key= '5b579193857b873dcbd2eceb',
+#     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
 client = Client(
-    api_key= '5b579193857b873dcbd2eceb',
-    api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
+    api_key= '5b648d9908d8b114d114636f',
+    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 def getImpact(buys, sells, size=1.0):
     bidVol = 0
@@ -84,7 +87,7 @@ while(1):
     try:
         ps = [order[0] for order in orders['BUY']]
         for i in range(1, depth):
-            ords = str(np.random.uniform(2, 5))[:4]
+            ords = str(np.random.uniform(2000, 5000))[:4]
             ordp = ps[0] - (i * mtu)
             if ordp not in ps:
                 print("client.create_buy_order(", ticker, str(ordp),
