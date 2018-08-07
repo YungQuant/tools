@@ -83,7 +83,7 @@ while(1):
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
         bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
         bNatVol, aNatVol = float(orders['BUY'][0][1]), float(orders['SELL'][0][1])
-        bVol, aVol = float(orders['BUY'][0][3]), float(orders['SELL'][0][3])
+        bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = bVol
         spreads.append(spread)
         print("Kucoin AutoSellBid Version 1 -yungquant")
@@ -101,7 +101,7 @@ while(1):
                     print("quantity <= aVol", quantity, aVol)
                     exit(code=0)
                 print("client.create_sell_order(", ticker, bid, bVol, ")")
-                print(client.create_sell_order(ticker, str(bid), str(bVol)[:5]))
+                print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:5]))
                 quantity -= aVol
 
         timeCnt += 1
