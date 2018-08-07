@@ -69,7 +69,7 @@ def filterBalances(balances):
 args = sys.argv
 
 #ticker, depth, mtu = args[1], float(args[2]), float(args[3])
-ticker, depth, mtu = "OMX-ETH", 50, 0.0000001
+ticker, depth, mtu = "OMX-BTC", 50, 0.00000001
 
 
 print("Kucoin Ask Padder Version 1 -yungquant")
@@ -84,7 +84,7 @@ while(1):
     try:
         ps = [order[0] for order in orders['SELL']]
         for i in range(1, depth):
-            ords = str(np.random.uniform(2, 5))[:4]
+            ords = str(np.random.uniform(2000, 5000))[:4]
             ordp = ps[0] + (i * mtu)
             if ordp not in ps:
                 print("client.create_sell_order(", ticker, str(ordp),

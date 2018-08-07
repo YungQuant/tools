@@ -84,10 +84,10 @@ midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 
 avgVol = vol
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), str(avgVol / price)[:5], ")")
-    print(client.create_sell_order(ticker, str(price), str(avgVol / price)[:5]))
+    print("client.create_sell_order(", ticker, str(price), str(avgVol / price)[:6], ")")
+    print(client.create_sell_order(ticker, str(price), str(avgVol / price)[:6]))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:5], ")")
-    print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:5]))
+    print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:6], ")")
+    print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:6]))
 
 
