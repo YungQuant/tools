@@ -68,8 +68,8 @@ def filterBalances(balances):
 
 args = sys.argv
 
-#ticker, depth, mtu = args[1], float(args[2]), float(args[3])
-ticker, depth, mtu = "OMX-BTC", 50, 0.00000001
+ticker, depth, mtu = args[1], float(args[2]), float(args[3])
+#ticker, depth, mtu = "OMX-BTC", 50, 0.00000001
 
 
 print("Kucoin Ask Padder Version 1 -yungquant")

@@ -70,7 +70,7 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, aggression, window, ovAgg = args[1], float(args[2]), float(args[3]), float(args[4]), float(args[5])
+ticker, quantity, aggression, window, ovAgg, depth = args[1], float(args[2]), float(args[3]), float(args[4]), float(args[5]), float(args[6])
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
 sQuantity = quantity
 midpoints, spreads = [], []
@@ -86,7 +86,7 @@ while(1):
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = bVol
         spreads.append(spread)
-        print("Kucoin AutoSellBid Version 1 -yungquant")
+        print("Kucoin AutoSellBid Version 1.1 -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "aggression:", aggression, "ovAgg:", ovAgg, "depth:", )
         print("balances:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)

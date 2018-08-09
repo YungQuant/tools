@@ -79,7 +79,7 @@ while quantity > squantity * 0.1:
     #print("histOrds:", histOrds)
 
     if highResp['SELL'] == [] and not aOrderP:
-        avgHighVol = 2#np.mean([float(order[-1]) for order in highOrders['SELL'][:10]])
+        avgHighVol = 1000#np.mean([float(order[-1]) for order in highOrders['SELL'][:10]])
         print("client.create_sell_order(", highMarket, highAsk, str(avgHighVol)[:4], ")")
         print(client.create_sell_order(highMarket, highAsk, str(avgHighVol)[:4]))
         aOrderP = True

@@ -78,13 +78,13 @@ starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%
 
 print("Kucoin Cancel Version 1 -yungquant")
 print("Ticker:", ticker)
-balances = filterBalances(client.get_all_balances())
-print("balances:", balances)
-timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-orders = client.get_order_book(ticker, limit=99999)
-midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
-print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
-print("client.cancel_all_orders(ticker)")
+# balances = filterBalances(client.get_all_balances())
+# print("balances:", balances)
+# timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+# orders = client.get_order_book(ticker, limit=99999)
+# midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
+# print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
+print("client.cancel_all_orders(", ticker, ")")
 print(client.cancel_all_orders(ticker))
 
 

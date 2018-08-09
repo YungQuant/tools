@@ -94,14 +94,14 @@ while(1):
             spreadStd = np.std(spreads[:])
             spreadMean = np.mean(spreads[:])
             print("spread:", spread, "spreadT:", spreadMean + (spreadStd * aggression), "spreadMean:", spreadMean, "spreadStd:", spreadStd, )
-            if spread > spreadMean + (spreadStd * aggression):
+            if spread >= spreadMean + (spreadStd * aggression):
                 print("client.cancel_all_orders(ticker)")
                 print(client.cancel_all_orders(ticker))
                 if quantity <= aVol:
                     print("quantity <= aVol", quantity, aVol)
                     exit(code=0)
-                print("client.create_buy_order(", ticker, ask, np.random.uniform(2, 5), ")")
-                print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(2, 5))[:4]))
+                print("client.create_buy_order(", ticker, ask, np.random.uniform(200, 500), ")")
+                print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(200, 500))[:4]))
                 quantity -= aVol
 
         timeCnt += 1
