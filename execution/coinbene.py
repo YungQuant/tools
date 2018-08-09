@@ -124,6 +124,11 @@ def post_cancel(dic):
     return http_post_sign(url, dic)
 
 
+def cancel_all_orders(symbol):
+    orders = post_open_orders({ "symbol": symbol })['result']
+    for order in orders:
+        post_cancel({ "orderid": order["id"] })
+
 def create_buy_order(ticker, price, quantity):
     return post_order_place({
         "type": 'buy-limit',
