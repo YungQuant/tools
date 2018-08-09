@@ -23,36 +23,6 @@ except ImportError:
 
 from coinbene import create_buy_order, create_sell_order, post_balance
 
-def getImpact(buys, sells, size=1.0):
-    bidVol = 0
-    bidInitPrice = buys[0][0]
-    for k in range(len(buys)):
-        bidVol += buys[k][-1]
-        #print(f'bidVol: {bidVol}')
-        if bidVol >= size:
-            #print("bidVol >= size")
-            askImpacts = bidInitPrice-buys[k][0]
-            break
-        elif k == len(buys) - 1:
-            askImpacts = bidInitPrice
-            break
-
-    askVol = 0
-    askInitPrice = sells[0][0]
-    for k in range(len(sells)):
-        askVol += sells[k][-1]
-        #print(f'askvol:{askVol}')
-        if askVol >= size:
-            #print("askVol >= size")
-            bidImpacts = sells[k][0]-askInitPrice
-            break
-        elif k == len(sells) - 1:
-            bidImpacts = (1)
-            break
-
-    return bidImpacts, askImpacts
-
-
 def filter_balance(b):
     result = []
     for balance in b['balance']:
