@@ -100,7 +100,7 @@ while(1):
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)
             print("client.create_buy_order(", ticker, ask, np.random.uniform(s1, s2), ")")
-            print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(s1, s2))[:4]))
+            print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(s1, s2))[:6]))
             quantity -= aVol
 
         timeCnt += 1
