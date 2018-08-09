@@ -3,8 +3,8 @@ import hashlib
 import requests
 import json
 
-apiid = '85822c1ac6e3a90897802348f11f4911'
-secret = '1ff7386b582a41048f44c1baa3fbed8d'
+apiid = '1f0757b05472b0e015dd501b1e339978'
+secret = '1399ba83c59941e4b2d7082d05e2e378'
 
 market_url = "http://api.coinbene.com/v1/market/"
 trade_url = "http://api.coinbene.com/v1/trade/"
