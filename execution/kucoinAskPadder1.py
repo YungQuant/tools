@@ -25,9 +25,12 @@ import kucoin
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
+# client = Client(
+#     api_key= '5b579193857b873dcbd2eceb',
+#     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
 client = Client(
-    api_key= '5b579193857b873dcbd2eceb',
-    api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
+    api_key= '5b648d9908d8b114d114636f',
+    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 def getImpact(buys, sells, size=1.0):
     bidVol = 0
@@ -68,24 +71,24 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, depth, mtu = args[1], float(args[2]), float(args[3])
-#ticker, depth, mtu = "OMX-BTC", 50, 0.00000001
+ticker, depth, mtu, r1, r2 = args[1], int(args[2]), float(args[3]), int(args[4]), int(args[5])
+#ticker, depth, mtu = "OMX-BTC", 50, 0.00000002
 
 
 print("Kucoin Ask Padder Version 1 -yungquant")
-print("Ticker:", ticker, "depth:", depth, "mtu:", mtu)
-timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+print("Ticker:", ticker, "depth:", depth, "mtu:", mtu, "r1:", r1, "r2:", r2)
+# timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 orders = client.get_order_book(ticker, limit=99999)
-print("balances:", filterBalances(client.get_all_balances()))
-print("time:", timeStr)
+# print("balances:", filterBalances(client.get_all_balances()))
+# print("time:", timeStr)
 bi, ai = 0, 0
 
 while(1):
     try:
-        ps = [order[0] for order in orders['SELL']]
+        ps = [order[0] for order in orders['SELL'] if order[3] > 100]
         for i in range(1, depth):
-            ords = str(np.random.uniform(2000, 5000))[:4]
-            ordp = ps[0] + (i * mtu)
+            ords = str(np.random.uniform(r1, r2))[:4]
+            ordp = ps[0] - (i * mtu)
             if ordp not in ps:
                 print("client.create_sell_order(", ticker, str(ordp),
                       ords, ")")

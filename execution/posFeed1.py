@@ -131,7 +131,7 @@ while (1):
             print("dealt:", dealt_orders, "\n")
         if a == 1:
             active_orders = client.get_active_orders(ticker)
-            print("active:", active_orders, "\n")
+            print("active bids:", active_orders['BUY'], "\nactive asks", active_orders['SELL'], "\n")
 
         time.sleep(1)
         timeCnt += 1
