@@ -85,9 +85,9 @@ bi, ai = 0, 0
 
 while(1):
     try:
-        ps = [order[0] for order in orders['BUY'] if order[3] > 100]
+        ps = [order[0] for order in orders['BUY']] #if order[3] > 100]
         for i in range(1, depth):
-            ords = str(np.random.uniform(r1, r2))[:4]
+            ords = str(np.random.uniform(r1, r2))[:5]
             ordp = ps[0] - (i * mtu)
             if ordp not in ps:
                 print("client.create_buy_order(", ticker, str(ordp),

@@ -98,7 +98,7 @@ while(1):
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
-        time.sleep(60)
+        time.sleep(1)
     except:
         print("FUUUUUUUUUUCK",  sys.exc_info())
 

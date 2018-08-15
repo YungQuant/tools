@@ -70,21 +70,35 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker = args[1]
-#ticker = "OMX-BTC"
+ticker, quantity, above = args[1], float(args[2]), float(args[3])
+#ticker, quantity, above = "ETH-BTC", 1, 0
+sQuantity = quantity
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
+while quantity > 0:
+    try:
+        print("Kucoin Iceberg Version 1 -yungquant")
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "pp:", above)
+        balances = filterBalances(client.get_all_balances())
+        print("balances:", balances)
+        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+        orders = client.get_order_book(ticker, limit=99999)
+        midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
+        print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
+        if midpoint > above:
+            print("client.cancel_all_orders(ticker)")
+            print(client.cancel_all_orders(ticker))
 
-print("Kucoin Cancel Version 1 -yungquant")
-print("Ticker:", ticker)
-# balances = filterBalances(client.get_all_balances())
-# print("balances:", balances)
-# timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-# orders = client.get_order_book(ticker, limit=99999)
-# midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
-# print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
-print("client.cancel_all_orders(", ticker, ")")
-print(client.cancel_all_orders(ticker))
+            avgVol = np.mean([float(order[-1]) for order in orders['SELL'][:10]])
+            # if avgVol > balances[ticker[:3]]:
+            #     avgVol = balances[ticker[:3]]
+            print("client.create_sell_order(", ticker, str(above), str(np.floor(avgVol / float(orders['SELL'][0][0]))), ")")
+            print(client.create_sell_order(ticker, str(above), str(np.floor(avgVol / float(orders['SELL'][0][0])))))
 
+        timeCnt += 1
+        print("timeCnt:", timeCnt, "\n")
+        time.sleep(1)
+    except:
+        print("FUUUUUUUUUUCK",  sys.exc_info())
 

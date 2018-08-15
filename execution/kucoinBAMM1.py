@@ -107,19 +107,19 @@ while(1):
             if bb == 0:
                 if spread > mtu * 4 and aBV == 0 and aAV == 0:
                     print("client.create_buy_order(", ticker, bid + mtu, quantity / 2, ")")
-                    #print(client.create_buy_order())
+                    print(client.create_buy_order(ticker, str(bid + mtu), str((quantity / 2) / bid)))
 
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
-                    #print(client.create_sell_order())
+                    print(client.create_sell_order(ticker, str(ask-mtu), str((quantity / 2) / ask)))
 
                 elif spread > mtu * 4 and aBV < quantity / 2 or aAV < quantity / 2:
                     if aBV < quantity / 2:
                         print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
-                        # print(client.create_sell_order())
+                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)))
 
                     if aAV < quantity / 2:
                         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        # print(client.create_buy_order())
+                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)))
 
                 else:
                     print("shes toooo tight homie! maybe try her asshole")
@@ -127,19 +127,19 @@ while(1):
             if bb == 1:
                 if spread > mtu * 4 and aBV == 0 and aAV == 0:
                     print("client.create_buy_order(", ticker, bid + mtu, quantity, ")")
-                    # print(client.create_buy_order())
+                    print(client.create_buy_order(ticker, str(bid + mtu), str(quantity / bid)))
 
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
-                    # print(client.create_sell_order())
+                    print(client.create_sell_order(ticker, str(ask - mtu), str((quantity / 2) / ask)))
 
                 elif spread > mtu * 4 and aBV < quantity / 2 or aAV < quantity / 2:
                     if aBV < quantity / 2:
                         print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
-                        # print(client.create_sell_order())
+                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)))
 
                     if aAV < quantity / 2:
                         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        # print(client.create_buy_order())
+                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)))
 
                 else:
                     print("shes toooo tight homie! maybe try her asshole")
@@ -147,7 +147,7 @@ while(1):
             if bb > 1:
                 if spread > mtu * 4 and aBV == 0 and aAV == 0:
                     print("client.create_buy_order(", ticker, bid + mtu, quantity * bb, ")")
-                    # print(client.create_buy_order())
+                    print(client.create_buy_order())
 
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
                     # print(client.create_sell_order())
@@ -159,7 +159,7 @@ while(1):
 
                     if aAV < quantity / 2:
                         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        # print(client.create_buy_order())
+                        print(client.create_buy_order())
 
                 else:
                     print("shes toooo tight homie! maybe try her asshole")
