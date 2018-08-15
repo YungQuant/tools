@@ -111,10 +111,14 @@ def filterBalances(balances):
 def filter_dealt_orders(data):
     result = data['datas']
     for datum in result:
+        datum['ticker'] = datum['coinType'] + '-' + datum['coinTypePair']
+        del datum['coinType']
+        del datum['coinTypePair']
         del datum['orderOid']
         del datum['oid']
         del datum['createdAt']
         del datum['id']
+        del datum['dealDirection']
 
     return result
 
