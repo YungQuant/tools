@@ -70,8 +70,9 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, aggression, window, ovAgg, depth = args[1], float(args[2]), float(args[3]), float(args[4]), float(args[5]), float(args[6])
+ticker, quantity, r1, r2, T, s1, s2, cooldown = args[1], float(args[2]), int(args[3]), int(args[4]), int(args[5]), int(args[6]), int(args[7]), int(args[8])
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
+ticker1 = "OMX-ETH"
 sQuantity = quantity
 midpoints, spreads = [], []
 timeCnt = 0
@@ -79,34 +80,35 @@ starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%
 
 while(1):
     try:
-        orders = client.get_order_book(ticker, limit=99999)
+        orders = client.get_order_book(ticker, limit=10)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
         bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
         bNatVol, aNatVol = float(orders['BUY'][0][1]), float(orders['SELL'][0][1])
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
-        spread = bVol
+        spread = ask - bid
         spreads.append(spread)
-        print("Kucoin AutoSellBid Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "aggression:", aggression, "ovAgg:", ovAgg, "depth:", )
+        print("Kucoin RandBuyAsk Version 1 -yungquant")
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
         print("balances:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
-        if len(spreads) > window and timeCnt % ovAgg == 0:
-            spreadStd = np.std(spreads[:])
-            spreadMean = np.mean(spreads[:])
-            print("spread:", spread, "spreadT:", spreadMean + (spreadStd * aggression), "spreadMean:", spreadMean, "spreadStd:", spreadStd, )
-            if spread > spreadMean + (spreadStd * aggression):
-                print("client.cancel_all_orders(ticker)")
-                print(client.cancel_all_orders(ticker))
-                if quantity <= bVol:
-                    print("quantity <= aVol", quantity, aVol)
-                    exit(code=0)
-                print("client.create_sell_order(", ticker, bid, bVol, ")")
-                print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:5]))
-                quantity -= aVol
+        print("r1:", r1, "r2:", r2, "T:", T)
+        t = np.random.uniform(r1, r2)
+        print("try:", t, " > ", T, "?")
+        if t > T:
+            print("client.cancel_all_orders(ticker)")
+            print(client.cancel_all_orders(ticker))
+            if quantity <= aVol:
+                print("quantity <= aVol", quantity, aVol)
+                exit(code=0)
+            print("client.create_buy_order(", ticker, ask, np.random.uniform(s1, s2), ")")
+            print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(s1, s2))[:6]))
+            print("client.create_buy_order(", ticker1, ask, np.random.uniform(s1, s2), ")")
+            print(client.create_buy_order(ticker1, str(ask), str(np.random.uniform(s1, s2))[:6]))
+            quantity -= aVol
 
         timeCnt += 1
-        print("timeCnt:", timeCnt, "\n")
-        time.sleep(1)
-    except:
+        print("cooldown:", cooldown, "timeCnt:", timeCnt, "\n")
+        time.sleep(cooldown)
+    except :
         print("FUUUUUUUUUUCK", sys.exc_info())
 
