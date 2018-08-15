@@ -108,6 +108,16 @@ def filterBalances(balances):
             retBals.append(balances[i]['balance'])
     return retBals
 
+def filter_dealt_orders(data):
+    result = data['datas']
+    for datum in result:
+        del datum['orderOid']
+        del datum['oid']
+        del datum['createdAt']
+        del datum['id']
+
+    return result
+
 args = sys.argv
 ticker, d, a = args[1], int(args[2]), int(args[3])
 initBook = client.get_order_book(ticker, limit=99999)
@@ -127,7 +137,7 @@ while (1):
         print("balances:", bals)
         print("price:", midpoint, "\n")
         if d == 1:
-            dealt_orders = client.get_dealt_orders(ticker)
+            dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
             print("dealt:", dealt_orders, "\n")
         if a == 1:
             active_orders = client.get_active_orders(ticker)
