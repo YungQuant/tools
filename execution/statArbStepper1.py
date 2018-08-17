@@ -92,18 +92,32 @@ while quantity > squantity * 0.1:
     else:
         if highResp['SELL'] != [] and highResp['SELL'][-3] > 0:
             print("client.create_buy_order(", lowMarket, lowAsk, highResp['SELL'][-3], ")")
-            print(client.create_buy_order(lowMarket, lowAsk, str(highResp['SELL'][-3])[:4]))
+            print(client.create_buy_order(lowMarket, lowAsk, str(highResp['SELL'][-3])[:6]))
+            print("client.create_sell_order(", highMarket, highAsk, str(highResp['SELL'][-3]), ")")
+            print(client.create_sell_order(highMarket, highAsk, str(highResp['SELL'][-3])))
             aOrderP = True
         elif highResp['SELL'] == [] and aOrderP:
             avgHighVol = 1000#np.mean([float(order[-1]) for order in highOrders['SELL'][:10]])
             print("client.create_buy_order(", lowMarket, lowAsk, avgHighVol, ")")
-            print(client.create_buy_order(lowMarket, lowAsk, str(avgHighVol)[:4]))
-            aOrderP = False
-        # elif lowResp['BUY'] == [] and bOrderP == False:
-        #     avgLowVol = np.mean([float(order[-1]) for order in lowOrders['BUY'][:10])
-        #     print("client.create_buy_order(", lowMarket, lowBid, str(avgLowVol)[:4], ")")
-        #     print(client.create_buy_order(lowMarket, lowBid, str(avgLowVol)[:4]))
-        #     bOrderP = True
+            print(client.create_buy_order(lowMarket, lowAsk, str(avgHighVol)[:6]))
+            print("client.create_sell_order(", highMarket, highAsk, str(avgHighVol), ")")
+            print(client.create_sell_order(highMarket, highAsk, str(avgHighVol)))
+            aOrderP = True
+
+        if lowResp['BUY'] != [] and lowResp['BUY'][-3] > 0:
+            print("client.create_buy_order(", lowMarket, lowBid, lowResp['BUY'][-3], ")")
+            print(client.create_buy_order(lowMarket, lowBid, str(lowResp['BUY'][-3])[:6]))
+            print("client.create_sell_order(", highMarket, highBid, str(lowResp['BUY'][-3]), ")")
+            print(client.create_sell_order(highMarket, highBid, str(lowResp['BUY'][-3])))
+            bOrderP = True
+        elif lowResp['BUY'] == [] and bOrderP:
+            avgLowVol = 1000#np.mean([float(order[-1]) for order in lowOrders['SELL'][:10]])
+            print("client.create_buy_order(", lowMarket, lowBid, avgLowVol, ")")
+            print(client.create_buy_order(lowMarket, lowBid, str(avgLowVol)[:6]))
+            print("client.create_sell_order(", highMarket, highBid, str(avgLowVol), ")")
+            print(client.create_sell_order(highMarket, highBid, str(avgLowVol)))
+            bOrderP = True
+
 
     print("Active High Market Orders:", client.get_active_orders(highMarket), "Active Low Market Orders:", client.get_active_orders(lowMarket))
 

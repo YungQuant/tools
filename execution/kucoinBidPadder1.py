@@ -79,8 +79,8 @@ print("Kucoin Bid Padder Version 1 -yungquant")
 print("Ticker:", ticker, "depth:", depth, "mtu:", mtu, "r1:", r1, "r2:", r2)
 # timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 orders = client.get_order_book(ticker, limit=99999)
-# print("balances:", filterBalances(client.get_all_balances()))
-# print("time:", timeStr)
+print("balances:", filterBalances(client.get_all_balances()))
+#print("time:", timeStr)
 bi, ai = 0, 0
 
 while(1):
