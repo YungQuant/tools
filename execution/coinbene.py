@@ -140,10 +140,10 @@ def create_sell_order(ticker, price, quantity):
     return post_order_place({
         "symbol": ticker,
         "type": 'sell-limit',
-        "price": price,
-        "quantity": quantity
+        "price": str(price),
+        "quantity": str(quantity)
     })
 
-print(create_sell_order("omxeth", 0.0000240, 2000))
+print(create_sell_order("omxeth", '0.0000240', 2000))
 
 

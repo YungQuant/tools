@@ -142,14 +142,14 @@ while (1):
         print("price:", midpoint, "\n")
         if d == 1:
             dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
-            print("dealt:", dealt_orders, "\n")
+            for o in dealt_orders: print("dealt:", o)
         if a == 1:
             active_orders = client.get_active_orders(ticker)
-            print("active bids:", active_orders['BUY'], "\nactive asks", active_orders['SELL'], "\n")
+            print("\nactive bids:", active_orders['BUY'], "\nactive asks", active_orders['SELL'], "\n")
 
-        time.sleep(1)
+        time.sleep(10)
         timeCnt += 1
-        print("timeCnt:", timeCnt, ",", timeCnt / 60, "minutes\n")
+        print("timeCnt:", timeCnt, ",", timeCnt / 6, "minutes\n")
     except:
         print("FUUUUUUUUUUCK", sys.exc_info())
         time.sleep(1)
