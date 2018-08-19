@@ -125,25 +125,33 @@ def post_cancel(dic):
 
 
 def cancel_all_orders(symbol):
-    orders = post_open_orders({ "symbol": symbol })['result']
-    for order in orders:
-        post_cancel({ "orderid": order["id"] })
+    print("Cancelling all the orders")
+    open_orders_response = post_open_orders({ "symbol": symbol })['orders']
+    if open_orders_response is not None:
+        orders = open_orders_response['result']
+        for order in orders:
+            print('\tcanceling order', order['orderid'])
+            post_cancel({ "orderid": order["orderid"] })
 
 def create_buy_order(ticker, price, quantity):
+    print("Creating buy order", ticker, price, quantity)
     return post_order_place({
         "type": 'buy-limit',
-        "price": price,
+        "price": '%f' % price,
+        "symbol": ticker,
         "quantity": quantity
     })
 
 def create_sell_order(ticker, price, quantity):
+    print("Creating sell order", ticker, price, quantity)
     return post_order_place({
-        "symbol": ticker,
         "type": 'sell-limit',
-        "price": str(price),
-        "quantity": str(quantity)
+        "price": '%f' % price,
+        "symbol": ticker,
+        "quantity": quantity
     })
 
-print(create_sell_order("omxeth", '0.0000240', 2000))
-
+print("creating sell order:")
+print(create_sell_order("omxeth", 0.00002700, 10))
+cancel_all_orders("omxeth")
 
