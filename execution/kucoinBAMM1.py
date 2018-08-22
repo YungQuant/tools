@@ -149,7 +149,7 @@ while(1):
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
                     print(client.create_sell_order(ticker, str(ask-mtu), str((quantity / 2) / ask)[:7]))
 
-                elif aBV > 0 and aAV > 0 and aBV < quantity / 2 or aAV < quantity / 2:
+                elif aBV > 0 and aAV > 0 and (aBV + aAV <= quantity) and aBV < quantity / 2 or aAV < quantity / 2:
                     print("DEBUG: aBV > 0 and aAV > 0 and aBV + aAV < quantity")
                     if aBV < quantity / 2:
                         print("client.create_sell_order(", ticker, ask, (quantity / 2) - aBV, ")")
@@ -200,5 +200,6 @@ while(1):
         print("timeCnt:", timeCnt, "\n")
         time.sleep(cooldown)
     except :
+        time.sleep(cooldown)
         print("FUUUUUUUUUUCK", sys.exc_info(), "\n")
 

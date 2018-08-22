@@ -79,13 +79,15 @@ print("Kucoin Bid Padder Version 1 -yungquant")
 print("Ticker:", ticker, "depth:", depth, "mtu:", mtu, "r1:", r1, "r2:", r2)
 # timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 orders = client.get_order_book(ticker, limit=99999)
+bid, ask = orders['BUY'][0][0], orders['SELL'][0][0]
 print("balances:", filterBalances(client.get_all_balances()))
+print("bid:", bid, "ask:", ask)
 #print("time:", timeStr)
 bi, ai = 0, 0
 
 while(1):
     try:
-        ps = [order[0] for order in orders['BUY']] #if order[3] > 100]
+        ps = [ask] + [order[0] for order in orders['BUY']] #if order[3] > 100]
         for i in range(1, depth):
             ords = str(np.random.uniform(r1, r2))[:5]
             ordp = ps[0] - (i * mtu)

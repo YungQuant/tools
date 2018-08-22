@@ -70,7 +70,7 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, r1, r2, T, s1, s2, cooldown = args[1], float(args[2]), int(args[3]), int(args[4]), int(args[5]), int(args[5]), int(args[6]), int(args[7])
+ticker, quantity, r1, r2, T, s1, s2, cooldown = args[1], float(args[2]), int(args[3]), int(args[4]), int(args[5]), int(args[6]), int(args[7]), int(args[8])
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
 sQuantity = quantity
 midpoints, spreads = [], []
@@ -105,7 +105,7 @@ while(1):
             quantity -= aVol
 
         timeCnt += 1
-        print("timeCnt:", timeCnt, "\n")
+        print("cooldown:", cooldown, "timeCnt:", timeCnt, "\n")
         time.sleep(cooldown)
     except :
         print("FUUUUUUUUUUCK", sys.exc_info())

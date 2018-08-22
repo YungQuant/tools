@@ -123,7 +123,7 @@ def filter_dealt_orders(data):
     return result
 
 args = sys.argv
-ticker, posLim = args[1], float(args[4])
+ticker, posLim = args[1], float(args[2])
 initBook = client.get_order_book(ticker, limit=99999)
 timeCnt, execTrades = 0, 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")

@@ -70,7 +70,7 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, minV, window, ovAgg = args[1], float(args[2]), float(args[3]), float(args[4]), float(args[5])
+ticker, quantity, minV, ovAgg = args[1], float(args[2]), float(args[3]), int(args[4])
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
 sQuantity = quantity
 midpoints, spreads = [], []
@@ -87,24 +87,24 @@ while(1):
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = bVol
         print("Kucoin AutoSellBid Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "minV:", minV, "ovAgg:", ovAgg, "depth:", )
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "minV:", minV, "ovAgg:", ovAgg)
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
-        if timeCnt > window and timeCnt % ovAgg == 0:
-            print("spread:", spread)
-            if spread > minV:
-                print("client.cancel_all_orders(ticker)")
-                print(client.cancel_all_orders(ticker))
-                if quantity <= bVol:
-                    print("quantity <= aVol", quantity, aVol)
-                    exit(code=0)
-                print("client.create_sell_order(", ticker, bid, bVol, ")")
-                print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:6]))
-                quantity -= aVol
+
+        print("spread:", spread)
+        if spread > minV:
+            print("client.cancel_all_orders(ticker)")
+            print(client.cancel_all_orders(ticker))
+            if quantity <= bVol:
+                print("quantity <= aVol", quantity, aVol)
+                exit(code=0)
+            print("client.create_sell_order(", ticker, bid, bVol, ")")
+            print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:6]))
+            quantity -= aVol
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
-        time.sleep(1)
+        time.sleep(ovAgg)
     except:
         print("FUUUUUUUUUUCK", sys.exc_info())
-
+        time.sleep(ovAgg)
