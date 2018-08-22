@@ -76,6 +76,7 @@ sQuantity = quantity
 midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+sBals = filterBalances(client.get_all_balances())
 
 while(1):
     try:
@@ -88,7 +89,7 @@ while(1):
         spreads.append(spread)
         print("Kucoin RandBuyAsk Version 1 -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
-        print("balances:", filterBalances(client.get_all_balances()))
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
         print("r1:", r1, "r2:", r2, "T:", T)
         t = np.random.uniform(r1, r2)

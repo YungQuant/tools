@@ -151,7 +151,7 @@ def create_sell_order(ticker, price, quantity):
         "quantity": quantity
     })
 
-print("creating sell order:")
-print(create_sell_order("omxeth", 0.00002700, 10))
-cancel_all_orders("omxeth")
+#print("creating sell order:")
+#print(create_sell_order("omxeth", 0.00002700, 10))
+#print(post_open_orders({"symbol":'omxeth'}))
 

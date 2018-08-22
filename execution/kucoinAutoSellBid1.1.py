@@ -76,6 +76,7 @@ sQuantity = quantity
 midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+sBals = filterBalances(client.get_all_balances())
 
 while(1):
     try:
@@ -88,7 +89,7 @@ while(1):
         spreads.append(spread)
         print("Kucoin AutoSellBid Version 1.1 -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "aggression:", aggression, "ovAgg:", ovAgg, "depth:", )
-        print("balances:", filterBalances(client.get_all_balances()))
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
         if len(spreads) > window and timeCnt % ovAgg == 0:
             spreadStd = np.std(spreads[:])

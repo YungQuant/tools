@@ -70,36 +70,41 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, below = args[1], float(args[2]), float(args[3])
-#ticker, quantity = "OMX-ETH", 1
+ticker, quantity, minV, window, ovAgg = args[1], float(args[2]), float(args[3]), float(args[4]), float(args[5])
+#ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
 sQuantity = quantity
+midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 sBals = filterBalances(client.get_all_balances())
 
 while(1):
     try:
-        print("Kucoin AutoBuy Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "below", below)
-        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        balances = filterBalances(client.get_all_balances())
-        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         orders = client.get_order_book(ticker, limit=99999)
-        midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
-        print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
-        if midpoint < below:
-            print("client.cancel_all_orders(ticker)")
-            print(client.cancel_all_orders(ticker))
-
-            avgVol = np.mean([float(order[-1]) for order in orders['BUY'][:10]])
-            if avgVol > balances[ticker[-3:]]:
-                avgVol = balances[ticker[-3:]]
-            print("client.create_buy_order(", ticker, str(float(orders['BUY'][0][0]) * 1.00001), str(avgVol / float(orders['BUY'][0][0]))[:7], ")")
-            print(client.create_buy_order(ticker, str(float(orders['BUY'][0][0]) * 1.00001), str(avgVol / float(orders['BUY'][0][0]))[:7]))
+        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+        bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
+        bNatVol, aNatVol = float(orders['BUY'][0][1]), float(orders['SELL'][0][1])
+        bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
+        spread = bVol
+        print("Kucoin AutoSellBid Version 1.1 -yungquant")
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "minV:", minV, "ovAgg:", ovAgg, "depth:", )
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
+        print("starttime:", starttime, "time:", timeStr)
+        if timeCnt > window and timeCnt % ovAgg == 0:
+            print("spread:", spread)
+            if spread > minV:
+                print("client.cancel_all_orders(ticker)")
+                print(client.cancel_all_orders(ticker))
+                if quantity <= bVol:
+                    print("quantity <= aVol", quantity, aVol)
+                    exit(code=0)
+                print("client.create_sell_order(", ticker, bid, bVol, ")")
+                print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:6]))
+                quantity -= aVol
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
-        time.sleep(30)
-    except Exception as e:
-        print("FUUUUUUUUUUCK",  e)
+        time.sleep(1)
+    except:
+        print("FUUUUUUUUUUCK", sys.exc_info())
 

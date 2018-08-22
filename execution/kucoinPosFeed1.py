@@ -123,10 +123,11 @@ def filter_dealt_orders(data):
     return result
 
 args = sys.argv
-ticker, d, a = args[1], int(args[2]), int(args[3])
+ticker, posLim = args[1], float(args[4])
 initBook = client.get_order_book(ticker, limit=99999)
 timeCnt, execTrades = 0, 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+sBals = filterBalances(client.get_all_balances())
 
 while (1):
     try:
@@ -138,15 +139,20 @@ while (1):
         print("PosFeed Version 1 -yungquant")
         print("Ticker:", ticker)
         print("starttime:", starttime)
-        print("balances:", bals)
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("price:", midpoint, "\n")
-        if d == 1:
-            dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
-            for o in dealt_orders: print("dealt:", o)
-        if a == 1:
-            active_orders = client.get_active_orders(ticker)
-            print("\nactive bids:", active_orders['BUY'], "\nactive asks", active_orders['SELL'], "\n")
-
+        dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
+        for o in dealt_orders: print("dealt:", o)
+        active = client.get_active_orders(ticker)
+        print("\nactive bids:", active['BUY'], "\nactive asks", active['SELL'], "\n")
+        aBV, aAV = sum([order[3] for order in active['BUY']]) * midpoint, sum(
+            [order[3] for order in active['SELL']]) * midpoint
+        av = aBV + aAV
+        print("aBV:", aBV, "aAV:", aAV, "av:", av)
+        if av > posLim:
+            for i in range(10): print("!!!!!!!!!!!!!! AV > POSLIM !!!!!!!!!!!!!!!!!")
+            print("client.cancel_all_orders(", ticker, ")")
+            print(client.cancel_all_orders(ticker))
         time.sleep(10)
         timeCnt += 1
         print("timeCnt:", timeCnt, ",", timeCnt / 6, "minutes\n")

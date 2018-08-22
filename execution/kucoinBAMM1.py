@@ -79,6 +79,7 @@ elif ticker[-3:] == "BTC":
     mtu = 0.00000001
 
 sQuantity = quantity
+sBals = filterBalances(client.get_all_balances())
 midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
@@ -86,10 +87,11 @@ starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%
 while(1):
     try:
         print("Kucoin BAMM Version 1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "cooldown:", cooldown, "bb:", bb)
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "cooldown:", cooldown, "bb:", bb, "mtu:", mtu)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
         print("starttime:", starttime, "time:", timeStr)
         orders = client.get_order_book(ticker, limit=200)
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
         midpoint = np.mean([bid, ask])
         bNatVol, aNatVol = float(orders['BUY'][0][1]), float(orders['SELL'][0][1])
@@ -98,86 +100,105 @@ while(1):
         spreads.append(spread)
 
         if timeCnt > window:
-            print("midpoint:", midpoint, "mean spread:", np.mean(spreads), "spread:", spread)
+            spreadT = mtu * 2
+            print("midpoint:", midpoint, "mean spread:", np.mean(spreads), "spread:", spread, "spreadT:", spreadT)
+            print("bid:", bid, "ask:", ask, "bvol:", bVol, "aVol:", aVol)
             active = client.get_active_orders(ticker)
-            aBV, aAV = sum([order[3] for order in active['BUY']]), sum([order[3] for order in active['SELL']])
+            aBV, aAV = sum([order[3] for order in active['BUY']]) * midpoint, sum([order[3] for order in active['SELL']]) * midpoint
             print("active bids:", active['BUY'], "active asks:", active['SELL'])
             print("aBV", aBV, "aAV:", aAV)
+            if spread > spreadT:
+                print("$$$SPREAD>SPREADT$$$")
 
-            if bb == 0:
-                if spread > mtu * 4 and aBV == 0 and aAV == 0:
+            if bb == -1:
+                if spread > spreadT and aBV == 0 and aAV == 0:
                     print("client.create_buy_order(", ticker, bid + mtu, quantity / 2, ")")
-                    print(client.create_buy_order(ticker, str(bid + mtu), str((quantity / 2) / bid)))
+                    print(client.create_buy_order(ticker, str(bid + mtu), str((quantity / 2) / bid)[:7]))
 
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
-                    print(client.create_sell_order(ticker, str(ask-mtu), str((quantity / 2) / ask)))
+                    print(client.create_sell_order(ticker, str(ask-mtu), str((quantity / 2) / ask)[:7]))
+
+                elif aBV + aAV < quantity:
+                    if aBV < quantity / 2:
+                        print("client.create_buy_order(", ticker, bid, (quantity / 2) - aAV, ")")
+                        print(client.create_buy_order(ticker, str(bid), str(((quantity / 2) - aBV) / bid)[:7]))
+
+                    if aAV < quantity / 2:
+                        print("client.create_sell_order(", ticker, ask, (quantity / 2) - aAV, ")")
+                        print(client.create_sell_order(ticker, str(ask), str(((quantity / 2) - aAV) / ask)[:7]))
+
+                elif spread > spreadT and aBV == 0 or aAV == 0:
+                    if aBV == 0:
+                        print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
+                        print(client.create_buy_order(ticker, str(bid + mtu), str((quantity / 2) / bid)[:7]))
+
+                    if aAV == 0:
+                        print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
+                        print(client.create_sell_order(ticker, str(ask - mtu), str((quantity / 2) / ask)[:7]))
+
+                else:
+                    if spread < spreadT:
+                        print("shes toooo tight homie! maybe try her asshole")
+
+            if bb == 0:
+                if spread > spreadT and aBV == 0 and aAV == 0:
+                    print("DEBUG: spread > spreadT and aBV == 0 and aAV == 0")
+                    print("client.create_buy_order(", ticker, bid + mtu, quantity / 2, ")")
+                    print(client.create_buy_order(ticker, str(bid + mtu), str((quantity / 2) / bid)[:7]))
+
+                    print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
+                    print(client.create_sell_order(ticker, str(ask-mtu), str((quantity / 2) / ask)[:7]))
 
                 elif aBV > 0 and aAV > 0 and aBV < quantity / 2 or aAV < quantity / 2:
+                    print("DEBUG: aBV > 0 and aAV > 0 and aBV + aAV < quantity")
                     if aBV < quantity / 2:
                         print("client.create_sell_order(", ticker, ask, (quantity / 2) - aBV, ")")
-                        print(client.create_sell_order(ticker, str(ask), str(((quantity / 2) - aBV) / ask)))
+                        print(client.create_sell_order(ticker, str(ask), str(((quantity / 2) - aBV) / ask)[:7]))
 
                     if aAV < quantity / 2:
                         print("client.create_buy_order(", ticker, bid, (quantity / 2) - aAV, ")")
-                        print(client.create_buy_order(ticker, str(bid), str(((quantity / 2) - aAV) / bid)))
+                        print(client.create_buy_order(ticker, str(bid), str(((quantity / 2) - aAV) / bid)[:7]))
 
-                elif spread > mtu * 4 and aBV == 0 or aAV == 0:
+                elif spread > spreadT and (aBV == 0 or aAV == 0):
+                    print("DEBUG: spread > spreadT and aBV == 0 or aAV == 0")
                     if aBV == 0:
                         print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
-                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)))
+                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)[:7]))
 
                     if aAV == 0:
                         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)))
+                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)[:7]))
 
                 else:
-                    print("shes toooo tight homie! maybe try her asshole")
+                    if spread < spreadT:
+                        print("shes toooo tight homie! maybe try her asshole")
 
             #ALL BB > 0 NEED ABOVE LOGIC ^^^^
 
-            if bb == 1:
-                if spread > mtu * 4 and aBV == 0 and aAV == 0:
-                    print("client.create_buy_order(", ticker, bid + mtu, quantity, ")")
-                    print(client.create_buy_order(ticker, str(bid + mtu), str(quantity / bid)))
-
-                    print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
-                    print(client.create_sell_order(ticker, str(ask - mtu), str((quantity / 2) / ask)))
-
-                elif spread > mtu * 4 and aBV < quantity / 2 or aAV < quantity / 2:
-                    if aBV < quantity / 2:
-                        print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
-                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)))
-
-                    if aAV < quantity / 2:
-                        print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)))
-
-                else:
-                    print("shes toooo tight homie! maybe try her asshole")
-
-            if bb > 1:
-                if spread > mtu * 4 and aBV == 0 and aAV == 0:
+            if bb >= 1:
+                if spread > spreadT and aBV == 0 and aAV == 0:
                     print("client.create_buy_order(", ticker, bid + mtu, quantity * bb, ")")
-                    print(client.create_buy_order())
+                    #print(client.create_buy_order())
 
                     print("client.create_sell_order(", ticker, ask - mtu, quantity / 2, ")")
                     # print(client.create_sell_order())
 
-                elif spread > mtu * 4 and aBV < quantity / 2 or aAV < quantity / 2:
+                elif spread > spreadT and aBV < quantity / 2 or aAV < quantity / 2:
                     if aBV < quantity / 2:
                         print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
                         # print(client.create_sell_order())
 
                     if aAV < quantity / 2:
                         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        print(client.create_buy_order())
+                        #print(client.create_buy_order())
 
                 else:
-                    print("shes toooo tight homie! maybe try her asshole")
+                    if spread < spreadT:
+                        print("shes toooo tight homie! maybe try her asshole")
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
         time.sleep(cooldown)
     except :
-        print("FUUUUUUUUUUCK", sys.exc_info())
+        print("FUUUUUUUUUUCK", sys.exc_info(), "\n")
 

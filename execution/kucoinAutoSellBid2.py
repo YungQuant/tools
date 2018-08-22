@@ -117,6 +117,7 @@ bidImpacts, askImpacts, midpoints = [], [], []
 timeCnt, execTrades = 0, 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 sPrice = np.mean([initBook['BUY'][0][0], initBook['SELL'][0][0]])
+sBals = filterBalances(client.get_all_balances())
 
 while (1):
     try:
@@ -131,7 +132,7 @@ while (1):
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "sPrice:", sPrice, "price:", midpoints[-1],
               "askAggression:", askAggression, "Window:", window, "ovAgg:", ovAgg, "pm:", pm)
         print("starttime:", starttime, "time:", timeStr)
-        print("balances:", bals)
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("price:", midpoints[-1], "ref:", ref, "bidImpact:", bidImpact, "askImpact:", askImpact)
         bidImpacts.append(bidImpact)
         askImpacts.append(askImpact)
