@@ -31,7 +31,7 @@ def get_request_data(params):
 
 
 def http_post(resource, params):
-    r = requests.post(url_prefix + resource, json=params, timeout=1)
+    r = requests.post(url_prefix + resource, json=params, timeout=5)
     result = r.json()
     return result
 
@@ -67,17 +67,66 @@ def cancel_all_orders():
     for id in orders:
         cancel_order(id)
 
+def all_floats(order):
+    for k, v in order.items():
+        order[k] = float(order[k])
+    return order
+
+
 def get_orderbook(ticker, limit = 20):
-    return http_post("/api/v1/market/orderBook", get_request_data({
+    response = http_post("/api/v1/market/orderBook", get_request_data({
         "symbol": ticker,
         "num": limit
-    }))['data']['result']
+    }))
+    result = response['data']['result']
+    result['asks'] = list(map(all_floats, result['asks']))
+    result['bids'] = list(map(all_floats, result['bids']))
+    return result
 
+# {'action': 'BUY', 'amount': '0.00000000', 'amountRemaining': '0.00000000', 'fee': '0.00000000', 'orderNo': 1609502468891668481, 'orderType': 'LMT', 'priceLimit': '0.00000103', 'quantity': '141.60040000', 'quantityRemaining': '141.60040000',
+ # 'state': 'UNDEAL', 'symbol': 'OMX/BTC', 'utcCreate': 1534941166781, 'utcUpdate': 1534941166832}
+
+def clean_order_details(order):
+    del order['fee']
+    del order['orderNo']
+    del order['orderType']
+    del order['amount']
+    del order['amountRemaining']
+    del order['utcCreate']
+    del order['utcUpdate']
+    del order['state']
+    return order
+
+def order_details(ids):
+    # you can only get order details 50 orders at a time
+    chunks = [ids[0:50]]
+    while len(ids) > 0:
+        chunks.append(ids[0:50])
+        del ids[0:50]
+
+    result = []
+    for chunk in chunks:
+        response = http_post("/api/v1/order/list", get_request_data({
+            "orderNoList": ",".join(chunk)
+        }))
+        orders = response['data']['result']
+        orders = list(map(clean_order_details, orders))
+        result = result + orders
+    return result
+
+
+def all_order_details():
+    orders = open_orders()
+    ids = []
+    for id in orders:
+        ids.append(id)
+    return order_details(ids)
 
 def balances():
-    response = http_post("/api/v1/asset/userAssetInfo", get_request_data({}))['data']['result']['asset']
+    response = http_post("/api/v1/asset/userAssetInfo", get_request_data({}))
+    data = response['data']['result']['asset']
     result = {}
-    for coin, data in response.items():
+    for coin, data in data.items():
         if float(data['total']) > 0:
             result[coin] = data
 

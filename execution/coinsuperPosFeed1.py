@@ -22,7 +22,7 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
 
-from coinsuper import get_orderbook, open_orders, balances
+from coinsuper import get_orderbook, all_order_details, balances
 
 
 # def filterActive(active):
@@ -31,9 +31,7 @@ from coinsuper import get_orderbook, open_orders, balances
 #         del a['orderid']
 #     return active
 
-args = sys.argv
-ticker, d, a = "omxeth", 1, 1
-#ticker, d, a = args[1], int(args[2]), int(args[3])
+ticker, d, a = "OMX/BTC", 1, 1
 
 timeCnt, execTrades = 0, 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
@@ -45,14 +43,11 @@ while (1):
         midpoint = np.mean([bid, ask])
         bals = balances()
 
-        if d == 1:
-            pass # print("coinbene doesn't return executed orders")
-        if a == 1:
-            active = open_orders()
-            #active = filterActive(active_orders)
-            #print("active:", active[])
-            for i in range(len(active)):
-                print("active:", active[i])
+        active = all_order_details()
+        #active = filterActive(active_orders)
+        #print("active:", active[])
+        for i in range(len(active)):
+            print("active:", active[i])
 
         print("PosFeed Version 1 -yungquant")
         print("Ticker:", ticker)
