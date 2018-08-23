@@ -123,7 +123,15 @@ def filter_dealt_orders(data):
     return result
 
 args = sys.argv
-ticker, posLim = args[1], float(args[2])
+ticker, posLim, account = args[1], float(args[2]), args[3]
+if account == "personal":
+    client = Client(
+        api_key='5b7dfd773232924f8607f128',
+        api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+else:
+    client = Client(
+        api_key='5b648d9908d8b114d114636f',
+        api_secret='7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 initBook = client.get_order_book(ticker, limit=99999)
 timeCnt, execTrades = 0, 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
