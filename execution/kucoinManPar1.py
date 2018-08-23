@@ -83,16 +83,15 @@ type, vol, price = args[1], float(args[2]), float(args[3])
 # midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 ticker = "OMX-BTC"
 ticker1 = "OMX-ETH"
-avgVol = vol
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_sell_order(ticker, str(price), str(avgVol / price)[:7]))
-    print("client.create_sell_order(", ticker1, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_sell_order(ticker1, str(price), str(avgVol / price)[:7]))
+    print("client.create_sell_order(", ticker, str(price), vol, ")")
+    print(client.create_sell_order(ticker, str(price), vol))
+    print("client.create_sell_order(", ticker1, str(price), vol, ")")
+    print(client.create_sell_order(ticker1, str(price), vol))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:7]))
-    print("client.create_buy_order(", ticker1, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_buy_order(ticker1, str(price), str(avgVol / price)[:7]))
+    print("client.create_buy_order(", ticker, str(price), vol, ")")
+    print(client.create_buy_order(ticker, str(price), vol))
+    print("client.create_buy_order(", ticker1, str(price), vol, ")")
+    print(client.create_buy_order(ticker1, str(price), vol))
 
 

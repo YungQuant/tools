@@ -23,8 +23,6 @@ except ImportError:
 
 
 from kucoin.client import Client
-kucoin_api_key = 'api_key'
-kucoin_api_secret = 'api_secret'
 # client = Client(
 #     api_key= '5b579193857b873dcbd2eceb',
 #     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
@@ -84,8 +82,8 @@ ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
 
 avgVol = vol
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_sell_order(ticker, str(price), str(avgVol / price)[:7]))
+    print("client.create_sell_order(", ticker, str(price), str(vol), ")")
+    print(client.create_sell_order(ticker, str(price), str(vol)))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:7], ")")
-    print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:7]))
+    print("client.create_buy_order(", ticker, str(price), str(vol), ")")
+    print(client.create_buy_order(ticker, str(price), str(vol)))
