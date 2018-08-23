@@ -22,7 +22,7 @@ except ImportError:
     from urllib.parse import urljoin
 
 
-from coinbene import cancel_all_orders, get_orderbook, create_buy_order
+from coinsuper import cancel_all_orders, get_orderbook, create_buy_order, balances
 
 
 args = sys.argv
@@ -36,15 +36,15 @@ starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%
 
 while(1):
     try:
-        orders = get_orderbook(ticker, 999999)['orderbook']
+        orders = get_orderbook(ticker, 999999)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        bid, ask = float(orders['bids'][0]['price']), float(orders['asks'][0]['price'])
+        bid, ask = float(orders['bids'][0]['limitPrice']), float(orders['asks'][0]['limitPrice'])
         bVol, aVol = float(orders['bids'][0]['quantity']), float(orders['asks'][0]['quantity'])
         spread = ask - bid
         spreads.append(spread)
         print("Coinbene AutoBuyAsk Version 1 -hugo")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "ovAgg:", ovAgg)
-        print("balances:", balances())
+        print("balances:", filter_balance())
         print("starttime:", starttime, "time:", timeStr)
         if len(spreads) > window and timeCnt % ovAgg == 0:
             spreadStd = np.std(spreads[:])

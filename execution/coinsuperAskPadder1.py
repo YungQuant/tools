@@ -53,7 +53,7 @@ while(1):
             if ordp not in ps:
                 print("client.create_sell_order(", ticker, str(ordp),
                       ords, ")")
-                # print(create_sell_order(ticker, str(ordp), ords))
+                print(create_sell_order(ticker, ordp, ords))
                 # time.sleep(1)
             if ordp <= ps['limitPrice']:
               exit(code=0)

@@ -23,12 +23,6 @@ except ImportError:
 
 from coinsuper import create_buy_order, create_sell_order
 
-def filter_balance(b):
-    result = []
-    for balance in b['balance']:
-        if balance['available'] != '0':
-            result.append(balance)
-    return result
 
 args = sys.argv
 
@@ -45,10 +39,10 @@ ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
 # midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), vol, ")")
-    print(create_sell_order(ticker, str(price), vol))
+    print("client.create_sell_order(", ticker, price, vol, ")")
+    print(create_sell_order(ticker, price, vol))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), vol, ")")
-    print(create_buy_order(ticker, str(price), vol))
+    print("client.create_buy_order(", ticker, price, vol, ")")
+    print(create_buy_order(ticker, price, vol))
 
 

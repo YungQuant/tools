@@ -50,7 +50,7 @@ while(1):
             # if avgVol > balances[ticker[:3]]:
             #     avgVol = balances[ticker[:3]]
             print("client.create_sell_order(", ticker, str(float(orders['asks'][0][0])), str(np.floor(avgVol / float(orders['asks'][0][0]))), ")")
-            print(create_sell_order(ticker, str(float(orders['asks'][0][0])), str(np.floor(avgVol / float(orders['asks'][0][0])))))
+            print(create_sell_order(ticker, float(orders['asks'][0][0]), np.floor(avgVol / float(orders['asks'][0][0]))))
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")

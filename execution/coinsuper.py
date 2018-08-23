@@ -16,7 +16,6 @@ def get_request_data(params):
     param_for_sign["secretkey"] = secretkey
     param_for_sign["timestamp"] = timestamp
     sign = '&'.join(['{}={}'.format(k, param_for_sign[k]) for k in sorted(param_for_sign.keys())])
-    print('sign: ', sign, ' econded: ', sign.encode("utf8"))
     # 生成签名
     md5_str = hashlib.md5(sign.encode("utf8")).hexdigest()
     # 组装请求参数
@@ -43,7 +42,7 @@ def create_buy_order(ticker, price, quantity):
         "orderType": 'LMT',
         "quantity": quantity,
         'amount': 0, # wtf?
-        "priceLimit": price
+        "priceLimit": '%f' % price
     }
     return http_post("/api/v1/order/buy", get_request_data(params))
 
@@ -53,22 +52,26 @@ def create_sell_order(ticker, price, quantity):
         "orderType": 'LMT',
         "quantity": quantity,
         'amount': 0, # wtf?
-        "priceLimit": price
+        "priceLimit": '%f' % price
     }
     return http_post("/api/v1/order/sell", get_request_data(params))
 
+def open_orders():
+    return http_post("/api/v1/order/openList", get_request_data({ "num": '1000' }))['data']['result']
+
 def cancel_order(id):
     return http_post("/api/v1/order/cancel", get_request_data({ "orderNo": id }))
+
+def cancel_all_orders():
+    orders = open_orders()
+    for id in orders:
+        cancel_order(id)
 
 def get_orderbook(ticker, limit = 20):
     return http_post("/api/v1/market/orderBook", get_request_data({
         "symbol": ticker,
         "num": limit
     }))['data']['result']
-
-
-def open_orders():
-    return http_post("/api/v1/order/openList", get_request_data({ "num": '1000' }))['data']['result']
 
 
 def balances():
