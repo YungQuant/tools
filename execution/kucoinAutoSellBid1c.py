@@ -86,21 +86,21 @@ while(1):
         bNatVol, aNatVol = float(orders['BUY'][0][1]), float(orders['SELL'][0][1])
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = bVol
-        print("Kucoin AutoSellBid Version 1.1 -yungquant")
+        print("Kucoin AutoSellBid Version 1.1c -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "minV:", minV, "ovAgg:", ovAgg)
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
 
-        print("spread:", spread)
-        if spread > minV:
+        print("bVol:", bVol)
+        if bVol > minV:
             print("client.cancel_all_orders(ticker)")
             print(client.cancel_all_orders(ticker))
             if quantity <= bVol:
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)
             print("client.create_sell_order(", ticker, bid, bVol, ")")
-            print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:6]))
-            quantity -= aVol
+            print(client.create_sell_order(ticker, str(bid), str(bVol/bid)[:7]))
+            quantity -= bVol
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
