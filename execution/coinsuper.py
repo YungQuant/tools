@@ -8,41 +8,6 @@ accesskey = '8691a3f9-f9cb-4925-bf2c-241650319975'
 secretkey = 'a4d55587-c333-4e60-ab28-428435176736'
 url_prefix = 'https://api.coinsuper.com'
 
-# kucoin sign:
-# def sign(**kwargs):
-#     sign_list = []
-#     for key, value in kwargs.items():
-#         sign_list.append("{}={}".format(key, value))
-#     sign_list.sort()
-#     sign_str = "&".join(sign_list)
-#     print("sign_str: " , sign_str)
-#     mysecret = sign_str.upper().encode()
-#     print("mysecret: " , mysecret)
-#     m = hashlib.md5()
-#     m.update(mysecret)
-#     return m.hexdigest()
-
-
-# def get_request_data(params):
-#     param_for_sign = params.copy()
-#     timestamp = int(time.time())
-#     param_for_sign["accesskey"] = accesskey
-#     param_for_sign["secretkey"] = secretkey
-#     param_for_sign["timestamp"] = timestamp
-#     md5_str = sign(**param_for_sign)
-#     request_data = {
-#         "common": {
-#             "accesskey": accesskey,
-#             "timestamp": timestamp,
-#             "sign": md5_str
-#         },
-#         "data": params
-#     }
-#     print("data: ", request_data)
-#     return request_data
-# 1500000000000
-# 1534988376
-
 def get_request_data(params):
     # 组装验签参数
     param_for_sign = params.copy()
