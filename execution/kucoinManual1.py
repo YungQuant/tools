@@ -89,5 +89,3 @@ if type == "SELL":
 elif type == "BUY":
     print("client.create_buy_order(", ticker, str(price), str(avgVol / price)[:7], ")")
     print(client.create_buy_order(ticker, str(price), str(avgVol / price)[:7]))
-
-
