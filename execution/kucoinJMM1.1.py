@@ -1,10 +1,10 @@
 from kucoin.client import Client
-api_key="5b648d9908d8b114d114636f"
-api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
-client = Client(api_key, api_secret)
-# client = Client(
-#         api_key='5b7dfd773232924f8607f128',
-#         api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+# api_key="5b648d9908d8b114d114636f"
+# api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
+# client = Client(api_key, api_secret)
+client = Client(
+        api_key='5b7dfd773232924f8607f128',
+        api_secret='5e399779-df87-4980-b392-36130d2be4ee')
 import pandas as pd
 import sys
 import random, time
@@ -33,7 +33,7 @@ def filterBalances(balances):
             retBals[balances[i]['coinType']] = balances[i]['balance']
     return retBals
 
-ticker, initqty, skew, mult, ex = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5])
+ticker, initqty, skew, mult, s, ex = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6])
 
 if ticker[-3:] == "BTC":
     mtu = 0.00000001
@@ -64,7 +64,7 @@ list = [[str(initqty/2),str(initqty/2)]]
 while ex == 1:
     try:
         print("Kucoin JMM Version 1.1 -jakedigital & yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity)
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "skew:", skew, "mult:", mult, "ex:", ex)
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z"))
 
@@ -113,21 +113,31 @@ while ex == 1:
             print("top bid",top_bid)
             print("top bid",bot_ask)
 
-            if ((float(bidq[-1]) < float(bidq[-2])) and (tpos <= initqty)):
-                print("bid changed, post ask")
-                t_ap = bot_ask - mtu + skew
-                if t_ap > top_bid:
-                    print("new",ask(ff(t_ap),abs(bqc) * mult))
-                else:
-                    print("new", ask(ff(top_bid + mtu), abs(bqc) * mult))
+            if s == 0:
+                if ((float(bidq[-1]) < float(bidq[-2])) and (tpos <= initqty)):
+                    print("bid changed, post ask")
+                    print("new", ask(ff(bot_ask), abs(bqc)))
 
-            if ((float(askq[-1]) < float(askq[-2])) and (tpos <= initqty)):
-                print("ask changed, post bid")
-                t_bp = top_bid + mtu + skew
-                if t_bp < bot_ask:
-                    print("new",bid(ff(t_bp),abs(aqc) * mult))
-                else:
-                    print("new", bid(ff(bot_ask - mtu), abs(aqc) * mult))
+                if ((float(askq[-1]) < float(askq[-2])) and (tpos <= initqty)):
+                    print("ask changed, post bid")
+                    print("new", bid(ff(top_bid), abs(aqc)))
+
+            if s == 1:
+                if ((float(bidq[-1]) < float(bidq[-2])) and (tpos <= initqty)):
+                    print("bid changed, post ask")
+                    t_ap = bot_ask - mtu + skew
+                    if t_ap > top_bid:
+                        print("new",ask(ff(t_ap),abs(bqc) * mult))
+                    else:
+                        print("new", ask(ff(top_bid + mtu), abs(bqc) * mult))
+
+                if ((float(askq[-1]) < float(askq[-2])) and (tpos <= initqty)):
+                    print("ask changed, post bid")
+                    t_bp = top_bid + mtu + skew
+                    if t_bp < bot_ask:
+                        print("new",bid(ff(t_bp),abs(aqc) * mult))
+                    else:
+                        print("new", bid(ff(bot_ask - mtu), abs(aqc) * mult))
 
             print("\n")
             time.sleep(0.4)
