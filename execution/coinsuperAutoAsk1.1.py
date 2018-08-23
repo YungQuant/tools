@@ -49,8 +49,8 @@ while(1):
             avgVol = np.mean([float(order['quantity']) for order in orders['asks'][:10]])
             # if avgVol > balances[ticker[:3]]:
             #     avgVol = balances[ticker[:3]]
-            print("client.create_sell_order(", ticker, str(float(orders['asks'][0][0])), str(np.floor(avgVol / float(orders['asks'][0][0]))), ")")
-            print(create_sell_order(ticker, float(orders['asks'][0][0]), np.floor(avgVol / float(orders['asks'][0][0]))))
+            print("client.create_sell_order(", ticker, str(float(orders['asks'][0]['limitPrice'])), str(np.floor(avgVol / float(orders['asks'][0]['limitPrice']))), ")")
+            print(create_sell_order(ticker, float(orders['asks'][0]['limitPrice']), np.floor(avgVol / float(orders['asks'][0]['limitPrice']))))
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
