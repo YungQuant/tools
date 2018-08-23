@@ -47,10 +47,10 @@ print("balances: ", filter_balance(balance))
 # midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 
 if type == "SELL":
-    print("create_sell_order(", ticker, str(price), vol, ")")
-    print(create_sell_order(ticker, str(price), vol))
+    print("create_sell_order(", ticker, price, vol, ")")
+    print(create_sell_order(ticker, price, vol))
 elif type == "BUY":
-    print("create_buy_order(", ticker, str(price), vol, ")")
-    print(create_buy_order(ticker, str(price), vol))
+    print("create_buy_order(", ticker, price, vol, ")")
+    print(create_buy_order(ticker, price, vol))
 
 
