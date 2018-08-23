@@ -77,6 +77,9 @@ midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 sBals = filterBalances(client.get_all_balances())
+orders = client.get_order_book(ticker, limit=10)
+bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
+sPrice = np.mean([bid, ask])
 
 while(1):
     try:
@@ -91,6 +94,7 @@ while(1):
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
+        print("sPrice:", sPrice, "price:", np.mean([bid, ask]))
         print("r1:", r1, "r2:", r2, "T:", T)
         t = np.random.uniform(r1, r2)
         print("try:", t, " > ", T, "?")
@@ -100,9 +104,10 @@ while(1):
             if quantity <= aVol:
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)
-            print("client.create_buy_order(", ticker, ask, np.random.uniform(s1, s2), ")")
-            print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(s1, s2))[:6]))
-            quantity -= aVol
+            ov = np.random.uniform(s1, s2)
+            print("client.create_buy_order(", ticker, ask, ov, ")")
+            print(client.create_buy_order(ticker, str(ask), str(ov)[:6]))
+            quantity -= ov
 
         timeCnt += 1
         print("cooldown:", cooldown, "timeCnt:", timeCnt, "\n")

@@ -70,7 +70,17 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, window, cooldown, bb = args[1], float(args[2]), int(args[3]), int(args[4]), float(args[5])
+ticker, quantity, window, cooldown, bb, account = args[1], float(args[2]), int(args[3]), int(args[4]), float(args[5]), args[6]
+
+if account == "personal":
+    client = Client(
+        api_key='5b7dfd773232924f8607f128',
+        api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+else:
+    client = Client(
+        api_key='5b648d9908d8b114d114636f',
+        api_secret='7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
+
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
 mtu = 0.00000001
 if ticker[-3:] == "ETH":
@@ -87,7 +97,7 @@ starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%
 while(1):
     try:
         print("Kucoin BAMM Version 1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "cooldown:", cooldown, "bb:", bb, "mtu:", mtu)
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "window:", window, "cooldown:", cooldown, "bb:", bb, "mtu:", mtu, "account:", account)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
         print("starttime:", starttime, "time:", timeStr)
         orders = client.get_order_book(ticker, limit=200)
@@ -105,7 +115,10 @@ while(1):
             print("bid:", bid, "ask:", ask, "bvol:", bVol, "aVol:", aVol)
             active = client.get_active_orders(ticker)
             aBV, aAV = sum([order[3] for order in active['BUY']]) * midpoint, sum([order[3] for order in active['SELL']]) * midpoint
-            print("active bids:", active['BUY'], "active asks:", active['SELL'])
+            for i in range(len(active['BUY'])):
+                print("active bid:", active['BUY'][i])
+            for i in range(len(active['SELL'])):
+                print("active ask:", active['SELL'][i])
             print("aBV", aBV, "aAV:", aAV)
             if spread > spreadT:
                 print("$$$SPREAD>SPREADT$$$")
@@ -159,15 +172,15 @@ while(1):
                         print("client.create_buy_order(", ticker, bid, (quantity / 2) - aAV, ")")
                         print(client.create_buy_order(ticker, str(bid), str(((quantity / 2) - aAV) / bid)[:7]))
 
-                elif spread > spreadT and (aBV == 0 or aAV == 0):
-                    print("DEBUG: spread > spreadT and aBV == 0 or aAV == 0")
-                    if aBV == 0:
-                        print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
-                        print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)[:7]))
-
-                    if aAV == 0:
-                        print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
-                        print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)[:7]))
+                # elif spread > spreadT and (aBV == 0 or aAV == 0):
+                #     print("DEBUG: spread > spreadT and aBV == 0 or aAV == 0")
+                #     if aBV == 0:
+                #         print("client.create_sell_order(", ticker, ask - mtu, (quantity / 2) - aBV, ")")
+                #         print(client.create_sell_order(ticker, str(ask - mtu), str(((quantity / 2) - aBV) / ask)[:7]))
+                #
+                #     if aAV == 0:
+                #         print("client.create_buy_order(", ticker, bid + mtu, (quantity / 2) - aAV, ")")
+                #         print(client.create_buy_order(ticker, str(bid + mtu), str(((quantity / 2) - aAV) / bid)[:7]))
 
                 else:
                     if spread < spreadT:
@@ -196,6 +209,12 @@ while(1):
                     if spread < spreadT:
                         print("shes toooo tight homie! maybe try her asshole")
 
+            if aAV + aAV > quantity:
+                print(f"!!!!!!!!!!!!!!!!!!{aAV + aAV} > {quantity}!!!!!!!!!!!!!!!!!!!!!")
+                if aAV + aAV > quantity * 1.25:
+                    for i in range(5):
+                        print(f"!!!!!!!!!!!!!!!!!!{aAV + aAV} > {quantity}*1.25!!!!!!!!!!!!!!!!!!!!!")
+                    exit(code=0)
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
         time.sleep(cooldown)

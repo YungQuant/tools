@@ -28,12 +28,12 @@ sys.path.append("..")
 from kucoin.client import Client
 kucoin_api_key = 'api_key'
 kucoin_api_secret = 'api_secret'
-# client = Client(
-#     api_key= '5b579193857b873dcbd2eceb',
-#     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
 client = Client(
-    api_key= '5b648d9908d8b114d114636f',
-    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
+    api_key= '5b7dfd773232924f8607f128',
+    api_secret= '5e399779-df87-4980-b392-36130d2be4ee')
+# client = Client(
+#     api_key= '5b648d9908d8b114d114636f',
+#     api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 
 
