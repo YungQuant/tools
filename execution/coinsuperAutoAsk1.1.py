@@ -38,7 +38,7 @@ while(1):
         balances = balances()
         print("balances:", balances)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        orders = get_orderbook(ticker, 999999)['orderbook']
+        orders = get_orderbook(ticker, 999999)
         bid, ask = orders['bids'][0]['price'], orders['asks'][0]['price']
         midpoint = np.mean([bid, ask])
         print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
