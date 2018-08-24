@@ -82,8 +82,8 @@ ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
 
 avgVol = vol
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), str(vol), ")")
-    print(client.create_sell_order(ticker, str(price), str(vol)))
+    print("client.create_sell_order(", ticker, price, vol, ")")
+    print(client.create_sell_order(ticker, price, vol))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), str(vol), ")")
-    print(client.create_buy_order(ticker, str(price), str(vol)))
+    print("client.create_buy_order(", ticker, price, vol, ")")
+    print(client.create_buy_order(ticker, price, vol))
