@@ -84,14 +84,14 @@ type, vol, price = args[1], float(args[2]), float(args[3])
 ticker = "OMX-BTC"
 ticker1 = "OMX-ETH"
 if type == "SELL":
-    print("client.create_sell_order(", ticker, str(price), vol, ")")
-    print(client.create_sell_order(ticker, str(price), vol))
-    print("client.create_sell_order(", ticker1, str(price), vol, ")")
-    print(client.create_sell_order(ticker1, str(price), vol))
+    print("client.create_sell_order(", ticker, price, vol, ")")
+    print(client.create_sell_order(ticker, price, vol))
+    print("client.create_sell_order(", ticker1, price, vol, ")")
+    print(client.create_sell_order(ticker1, price, vol))
 elif type == "BUY":
-    print("client.create_buy_order(", ticker, str(price), vol, ")")
-    print(client.create_buy_order(ticker, str(price), vol))
-    print("client.create_buy_order(", ticker1, str(price), vol, ")")
-    print(client.create_buy_order(ticker1, str(price), vol))
+    print("client.create_buy_order(", ticker, price, vol, ")")
+    print(client.create_buy_order(ticker, price, vol))
+    print("client.create_buy_order(", ticker1, price, vol, ")")
+    print(client.create_buy_order(ticker1, price, vol))
 
 
