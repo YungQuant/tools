@@ -1,10 +1,4 @@
 from kucoin.client import Client
-# api_key="5b648d9908d8b114d114636f"
-# api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
-# client = Client(api_key, api_secret)
-client = Client(
-        api_key='5b7dfd773232924f8607f128',
-        api_secret='5e399779-df87-4980-b392-36130d2be4ee')
 import pandas as pd
 import sys
 import random, time
@@ -12,10 +6,10 @@ import datetime
 import numpy as np
 from decimal import *
 ff = lambda x: (format((x),'.7f'))
-ask = lambda px,qty: client.create_sell_order('OMX-ETH',px,qty)
-bid = lambda px,qty: client.create_buy_order('OMX-ETH',px,qty)
-cancelsells = lambda: client.cancel_all_orders('OMX-ETH', 'SELL')
-cancelbuys = lambda: client.cancel_all_orders('OMX-ETH', 'BUY')
+ask = lambda px,qty: client.create_sell_order(ticker,px,qty)
+bid = lambda px,qty: client.create_buy_order(ticker,px,qty)
+cancelsells = lambda: client.cancel_all_orders(ticker, 'SELL')
+cancelbuys = lambda: client.cancel_all_orders(ticker, 'BUY')
 
 
 def bal():
@@ -33,7 +27,7 @@ def filterBalances(balances):
             retBals[balances[i]['coinType']] = balances[i]['balance']
     return retBals
 
-ticker, initqty, skew, mult, s, ex = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6])
+ticker, initqty, skew, mult, s, ex, account = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]), sys.argv[7]
 
 if ticker[-3:] == "BTC":
     mtu = 0.00000001
@@ -41,6 +35,15 @@ if ticker[-3:] == "BTC":
 elif ticker[-3:] == "ETH":
     mtu = 0.0000001
     mtu2 = 0.0000002
+
+if account == "personal":
+    client = Client(
+            api_key='5b7dfd773232924f8607f128',
+            api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+else:
+    api_key="5b648d9908d8b114d114636f"
+    api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
+    client = Client(api_key, api_secret)
 
 
 # skew = 0
@@ -68,10 +71,10 @@ while ex == 1:
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z"))
 
-        depth = client.get_order_book('OMX-ETH', limit=50)
+        depth = client.get_order_book(ticker, limit=50)
         sz,bz = [(format((i[0]),'.7f')) for i in depth['SELL']],[(format((i[0]),'.7f')) for i in depth['BUY']]
         top_bid,bot_ask = float(bz[0]),float(sz[0])
-        ee = client.get_active_orders('OMX-ETH')
+        ee = client.get_active_orders(ticker)
         buys,sells = ee['BUY'],ee['SELL']
         ss,bb = [(i[0],i[1],ff(i[2]),i[3]) for i in sells],[(i[0],i[1],ff(i[2]),i[3]) for i in buys]
 
@@ -87,7 +90,7 @@ while ex == 1:
         print("RUNNING:", running)
 
         if running == 1:
-            ee = client.get_active_orders('OMX-ETH')
+            ee = client.get_active_orders(ticker)
             buys,sells = ee['BUY'],ee['SELL']
             a,b = [(i[3]) for i in sells],[(i[3]) for i in buys]
             openbid,openask = sum(a),sum(b)

@@ -71,12 +71,21 @@ def filterBalances(balances):
 args = sys.argv
 
 ticker, quantity, r1, r2, T, s1, s2, cooldown = args[1], float(args[2]), int(args[3]), int(args[4]), int(args[5]), int(args[6]), int(args[7]), int(args[8])
+if ticker[-3:] == "BTC":
+    mtu = 0.00000001
+    mtu2 = 0.00000002
+elif ticker[-3:] == "ETH":
+    mtu = 0.0000001
+    mtu2 = 0.0000002
 #ticker, quantity, aggression, window, ovAgg = "OMX-ETH", 1, 1, 60, 10
-ticker1 = "OMX-ETH"
 sQuantity = quantity
 midpoints, spreads = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
+sBals = filterBalances(client.get_all_balances())
+orders = client.get_order_book(ticker, limit=10)
+bid, ask = float(orders['BUY'][0][0]), float(orders['SELL'][0][0])
+sPrice = np.mean([bid, ask])
 
 while(1):
     try:
@@ -87,10 +96,11 @@ while(1):
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = ask - bid
         spreads.append(spread)
-        print("Kucoin RandBuyAsk Version 1 -yungquant")
+        print("Kucoin RandBuyAsk Version 2 -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
-        print("balances:", filterBalances(client.get_all_balances()))
+        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
+        print("sPrice:", sPrice, "price:", np.mean([bid, ask]))
         print("r1:", r1, "r2:", r2, "T:", T)
         t = np.random.uniform(r1, r2)
         print("try:", t, " > ", T, "?")
@@ -100,11 +110,14 @@ while(1):
             if quantity <= aVol:
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)
-            print("client.create_buy_order(", ticker, ask, np.random.uniform(s1, s2), ")")
-            print(client.create_buy_order(ticker, str(ask), str(np.random.uniform(s1, s2))[:6]))
-            print("client.create_buy_order(", ticker1, ask, np.random.uniform(s1, s2), ")")
-            print(client.create_buy_order(ticker1, str(ask), str(np.random.uniform(s1, s2))[:6]))
-            quantity -= aVol
+            ov = np.random.uniform(s1, s2)
+            print("client.create_buy_order(", ticker, ask + mtu2, ov / 3, ")")
+            print(client.create_buy_order(ticker, str(ask + mtu2), str(ov / 3)[:6]))
+            print("client.create_buy_order(", ticker, ask, ov / 3, ")")
+            print(client.create_buy_order(ticker, str(ask), str(ov/3)[:6]))
+            print("client.create_buy_order(", ticker, ask - mtu, ov / 3, ")")
+            print(client.create_buy_order(ticker, str(ask - mtu), str(ov / 3)[:6]))
+            quantity -= ov
 
         timeCnt += 1
         print("cooldown:", cooldown, "timeCnt:", timeCnt, "\n")
