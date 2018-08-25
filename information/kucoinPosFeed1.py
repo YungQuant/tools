@@ -147,15 +147,29 @@ while (1):
         print("PosFeed Version 1 -yungquant")
         print("Ticker:", ticker)
         print("starttime:", starttime)
-        print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
+        print("sBals:", sBals, "bals:", bals)
+        btcB, ethB, omxB = float(sBals[1]) - float(bals[1]), float(sBals[3]) - float(bals[3]), float(sBals[5]) - float(bals[5])
+        print("BTC burn:", btcB, "ETH burn:", ethB, "OMX burn:", omxB)
         print("price:", midpoint, "\n")
         dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
+        buys, sells, bps, sps = [], [], [], []
+        for i in range(len(dealt_orders)):
+            if dealt_orders[i]['direction'] == "BUY":
+                buys.append(dealt_orders[i])
+            else:
+                sells.append(dealt_orders[i])
+        for k in range(len(buys)):
+            bps.append(buys[k]['dealPrice'])
+        for k in range(len(sells)):
+            sps.append(sells[k]['dealPrice'])
+        avgB, avgS = np.mean(bps), np.mean(sps)
         for o in dealt_orders: print("dealt:", o)
         active = client.get_active_orders(ticker)
         print("\nactive bids:", active['BUY'], "\nactive asks", active['SELL'], "\n")
         aBV, aAV = sum([order[3] for order in active['BUY']]) * midpoint, sum(
             [order[3] for order in active['SELL']]) * midpoint
         av = aBV + aAV
+        print("avg buy price:", avgB, "avg sell price:", avgS)
         print("aBV:", aBV, "aAV:", aAV, "av:", av)
         if av > posLim:
             for i in range(10): print("!!!!!!!!!!!!!! AV > POSLIM !!!!!!!!!!!!!!!!!")

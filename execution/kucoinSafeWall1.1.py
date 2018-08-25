@@ -28,9 +28,9 @@ kucoin_api_secret = 'api_secret'
 # client = Client(
 #     api_key= '5b579193857b873dcbd2eceb',
 #     api_secret= '0ca53c55-39d2-45aa-8a75-cbeb7c735d26')
-# client = Client(
-#     api_key= '5b648d9908d8b114d114636f',
-#     api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
+client = Client(
+    api_key= '5b648d9908d8b114d114636f',
+    api_secret= '7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0')
 
 def getImpact(buys, sells, size=1.0):
     bidVol = 0
@@ -70,43 +70,61 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, above, account = args[1], float(args[2]), float(args[3]), args[4]
-if account == "personal":
-    client = Client(
-            api_key='5b7dfd773232924f8607f128',
-            api_secret='5e399779-df87-4980-b392-36130d2be4ee')
-else:
-    api_key="5b648d9908d8b114d114636f"
-    api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
-    client = Client(api_key, api_secret)
+ticker, quantity, window, pBuff, vBuff = args[1], float(args[2]), int(args[3]), float(args[4]), float(args[5])
+if ticker[-3:] == "BTC":
+    mtu = 0.00000001
+    mtu2 = 0.00000002
+    precision = 8
+elif ticker[-3:] == "ETH":
+    mtu = 0.0000001
+    mtu2 = 0.0000002
+    precision = 7
+# if window < 10800:
+#     print("Recommend window setting > 10800")
+#     if window < 3600:
+#         print("Recommend window setting > 10800, setting window to 3600")
+#         window = 3600
 #ticker, quantity, above = "ETH-BTC", 1, 0
 sQuantity = quantity
+midpoints = []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
-while(1):
+while quantity > 0:
     try:
-        print("Kucoin AutoAsk Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "above:", above)
+        print("Kucoin Safe Wall Version 1.1 -yungquant")
+        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "vBuff:", vBuff, "pBuff:", pBuff)
         balances = filterBalances(client.get_all_balances())
         print("balances:", balances)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
         orders = client.get_order_book(ticker, limit=99999)
-        midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
+        bid, ask = orders['BUY'][0][0],  orders['SELL'][0][0]
+        midpoint = np.mean([bid, ask])
+        midpoints.append(midpoint)
         print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
-        if midpoint > above:
-            print("client.cancel_all_orders(ticker)")
-            print(client.cancel_all_orders(ticker))
+        if timeCnt > window:
+            pPerc = midpoint / 100
+            vol = np.std(midpoints)
+            mmp = np.mean(midpoints)
+            ub, mb, lb = mmp + vol, mmp, mmp - vol
+            up, mp, lp = midpoint + (pPerc * pBuff), midpoint, midpoint - (pPerc * pBuff)
 
-            avgVol = np.mean([float(order[-1]) for order in orders['SELL'][:10]])
-            # if avgVol > balances[ticker[:3]]:
-            #     avgVol = balances[ticker[:3]]
-            print("client.create_sell_order(", ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0]))), ")")
-            print(client.create_sell_order(ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0])))))
+            print("Volatility:", vol, "MMP:", mmp, "pPerc:", pPerc)
+            print("ub/mb/lb:", ub, mb, lb, "\nup/mp/lp:", up, mp, lp)
+
+            #FUTURE VERSION BASED ON VOLUME OVER/UNDER IP
+
+            ip = min([lb, lp])
+
+            print("client.cancel_all_orders(ticker)")
+            #print(client.cancel_all_orders(ticker))
+
+            print("client.create_buy_order(", ticker, str(ip)[:precision], str(quantity), ")")
+            #print(client.create_sell_order(ticker, str(ip)[:precision], str(quantity)))
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
-        time.sleep(10)
+        time.sleep(1)
     except:
         print("FUUUUUUUUUUCK",  sys.exc_info())
 

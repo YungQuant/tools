@@ -94,7 +94,7 @@ while(1):
             if ordp not in ps:
                 print("client.create_buy_order(", ticker, str(ordp),
                       ords, ")")
-                print(client.create_buy_order(ticker, str(ordp),
+                print(client.create_buy_order(ticker, str(round(ordp, 8)),
                                               ords))
                 # time.sleep(1)
             if ordp >= ps[0]:
