@@ -70,15 +70,15 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, window, pBuff, vBuff = args[1], float(args[2]), int(args[3]), float(args[4]), float(args[5])
+ticker, quantity, window, flag, vBuff = args[1], float(args[2]), int(args[3]), args[4], float(args[5])
 if ticker[-3:] == "BTC":
     mtu = 0.00000001
     mtu2 = 0.00000002
-    precision = 8
+    precision = 9
 elif ticker[-3:] == "ETH":
     mtu = 0.0000001
     mtu2 = 0.0000002
-    precision = 7
+    precision = 8
 # if window < 10800:
 #     print("Recommend window setting > 10800")
 #     if window < 3600:
@@ -86,14 +86,14 @@ elif ticker[-3:] == "ETH":
 #         window = 3600
 #ticker, quantity, above = "ETH-BTC", 1, 0
 sQuantity = quantity
-midpoints = []
+midpoints, histExec = [], []
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
 while quantity > 0:
     try:
         print("Kucoin Safe Wall Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "vBuff:", vBuff, "pBuff:", pBuff)
+        print("Ticker:", ticker, "Quantity:", quantity, "vBuff:", vBuff, "flag:", flag)
         balances = filterBalances(client.get_all_balances())
         print("balances:", balances)
         timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
@@ -103,28 +103,85 @@ while quantity > 0:
         midpoints.append(midpoint)
         print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
         if timeCnt > window:
+            runP, runV = 0, 0
             pPerc = midpoint / 100
             vol = np.std(midpoints)
             mmp = np.mean(midpoints)
             ub, mb, lb = mmp + vol, mmp, mmp - vol
-            up, mp, lp = midpoint + (pPerc * pBuff), midpoint, midpoint - (pPerc * pBuff)
 
             print("Volatility:", vol, "MMP:", mmp, "pPerc:", pPerc)
-            print("ub/mb/lb:", ub, mb, lb, "\nup/mp/lp:", up, mp, lp)
+            print("ub/mb/lb:", ub, mb, lb)
+            print("Finding theoretical price for flag:", flag, "quantity:", quantity, "vBuff:", vBuff)
 
-            #FUTURE VERSION BASED ON VOLUME OVER/UNDER IP
+            if flag == "-u":
+                for order in orders['SELL']:
+                    runV += order[-2]
+                    runP = order[0]
+                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", quantity * vBuff)
+                    if runV >= quantity * vBuff:
+                        print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
+                        print("order:", order, "runP:", runP, "runV:", runV)
+                        if len(histExec) == 0 or runP != histExec[-1][0]:
+                            print("client.cancel_all_orders(ticker)")
+                            print(client.cancel_all_orders(ticker))
+                            print("client.create_sell_order(", ticker, str(runP), str(quantity), ")")
+                            print(client.create_sell_order(ticker, str(runP), str(quantity)))
+                            histExec.append([float(runP), float(quantity)])
+                        break
 
-            ip = min([lb, lp])
+            elif flag == "-d":
+                for order in orders['BUY']:
+                    runV += order[-2]
+                    runP = order[0]
+                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", quantity * vBuff)
+                    if runV >= quantity * vBuff:
+                        print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
+                        print("order:", order, "runP:", runP, "runV:", runV)
+                        if len(histExec) == 0 or runP != histExec[-1][0]:
+                            print("client.cancel_all_orders(ticker)")
+                            print(client.cancel_all_orders(ticker))
+                            print("client.create_buy_order(", ticker, str(runP), str(quantity), ")")
+                            print(client.create_buy_order(ticker, str(runP), str(quantity)))
+                            histExec.append([float(runP), float(quantity)])
+                        break
 
-            print("client.cancel_all_orders(ticker)")
-            #print(client.cancel_all_orders(ticker))
+            print("HistExecs:", histExec)
 
-            print("client.create_buy_order(", ticker, str(ip)[:precision], str(quantity), ")")
-            #print(client.create_sell_order(ticker, str(ip)[:precision], str(quantity)))
+
+
+
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
         time.sleep(1)
     except:
         print("FUUUUUUUUUUCK",  sys.exc_info())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

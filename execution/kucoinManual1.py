@@ -68,7 +68,15 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
+ticker, type, vol, price, account = args[1], args[2], float(args[3]), float(args[4]), args[5]
+if account == "personal":
+    client = Client(
+            api_key='5b7dfd773232924f8607f128',
+            api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+else:
+    api_key="5b648d9908d8b114d114636f"
+    api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
+    client = Client(api_key, api_secret)
 #ticker, type, vol, price = "OMX-BTC", "SELL", .25, 0.00000100
 # timeCnt = 0
 # starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
@@ -81,9 +89,9 @@ ticker, type, vol, price = args[1], args[2], float(args[3]), float(args[4])
 # midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
 
 avgVol = vol
-if type == "SELL":
+if type == "SELL" or type == "sell":
     print("client.create_sell_order(", ticker, price, vol, ")")
     print(client.create_sell_order(ticker, price, vol))
-elif type == "BUY":
+elif type == "BUY" or type == "buy":
     print("client.create_buy_order(", ticker, price, vol, ")")
     print(client.create_buy_order(ticker, price, vol))

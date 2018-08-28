@@ -70,7 +70,15 @@ def filterBalances(balances):
 
 args = sys.argv
 
-ticker, quantity, below = args[1], float(args[2]), float(args[3])
+ticker, quantity, below, account = args[1], float(args[2]), float(args[3]), args[4]
+if account == "personal":
+    client = Client(
+            api_key='5b7dfd773232924f8607f128',
+            api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+else:
+    api_key="5b648d9908d8b114d114636f"
+    api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
+    client = Client(api_key, api_secret)
 #ticker, quantity = "OMX-ETH", 1
 sQuantity = quantity
 timeCnt = 0
