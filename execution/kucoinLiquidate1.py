@@ -69,7 +69,7 @@ def filterBalances(balances):
     return retBals
 
 args = sys.argv
-ticker, account, amount, sp = args[1], args[2], float(args[3])
+ticker, account, amount, sp = args[1], args[2], float(args[3]), args[4]
 
 if account == "personal":
     client = Client(
