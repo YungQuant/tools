@@ -108,6 +108,9 @@ while quantity > 0:
             vol = np.std(midpoints)
             mmp = np.mean(midpoints)
             ub, mb, lb = mmp + vol, mmp, mmp - vol
+            active = client.get_active_orders(ticker)
+            aBV, aAV = sum([order[3] for order in active['BUY']]), sum(
+                [order[3] for order in active['SELL']])
 
             print("Volatility:", vol, "MMP:", mmp, "pPerc:", pPerc)
             print("ub/mb/lb:", ub, mb, lb)
@@ -117,8 +120,8 @@ while quantity > 0:
                 for order in orders['SELL']:
                     runV += order[-2]
                     runP = order[0]
-                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", quantity * vBuff)
-                    if runV >= quantity * vBuff:
+                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", (quantity + aAV) * vBuff)
+                    if runV >= (quantity + aAV) * vBuff:
                         print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
                         print("order:", order, "runP:", runP, "runV:", runV)
                         if len(histExec) == 0 or runP != histExec[-1][0]:
@@ -133,8 +136,8 @@ while quantity > 0:
                 for order in orders['BUY']:
                     runV += order[-2]
                     runP = order[0]
-                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", quantity * vBuff)
-                    if runV >= quantity * vBuff:
+                    print("order:", order, "runP:", runP, "runV:", runV, "runT:", (quantity + aBV) * vBuff)
+                    if runV >= (quantity + aBV) * vBuff:
                         print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
                         print("order:", order, "runP:", runP, "runV:", runV)
                         if len(histExec) == 0 or runP != histExec[-1][0]:

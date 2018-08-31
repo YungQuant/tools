@@ -75,6 +75,10 @@ if account == "personal":
     client = Client(
             api_key='5b7dfd773232924f8607f128',
             api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+elif account == "temp":
+    client = Client(
+        api_key='5b88e20991ed2916697b54b9',
+        api_secret='d4e64666-39e9-4fea-85f5-e9d052dee0ec')
 else:
     api_key="5b648d9908d8b114d114636f"
     api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
@@ -101,7 +105,8 @@ while(1):
 
             avgVol = np.mean([float(order[-1]) for order in orders['BUY'][:10]])
             if avgVol > balances[ticker[-3:]]:
-                avgVol = balances[ticker[-3:]]
+                print("avgVol = balances[ticker[-3:]]")
+                avgVol = balances[ticker[-3:]] * 0.99
             print("client.create_buy_order(", ticker, str(float(orders['BUY'][0][0]) * 1.00001), str(avgVol / float(orders['BUY'][0][0]))[:7], ")")
             print(client.create_buy_order(ticker, str(float(orders['BUY'][0][0]) * 1.00001), str(avgVol / float(orders['BUY'][0][0]))[:7]))
 

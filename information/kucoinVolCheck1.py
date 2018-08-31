@@ -89,49 +89,53 @@ while(1):
         orders = client.get_order_book(ticker, limit=99999)
         midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
         print("starttime:", starttime, "midpoint", midpoint)
-        runV, runP = 0, 0
+        runV, runNV, runP = 0, 0, 0
         if flag == "-vu":
             for order in orders['SELL']:
-                runV += order[-2]
+                runNV += order[-2]
+                runV += order[-2] * order[0]
                 runP = order[0]
-                print("order:", order, "runP:", runP, "runV:", runV)
-                if runV >= n:
+                print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
+                if runNV >= n:
                     print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
-                    print("order:", order, "runP:", runP, "runV:", runV)
+                    print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                     print("Ticker:", ticker, "flag:", flag, "n:", n)
                     break
 
         if flag == "-vd":
             for order in orders['BUY']:
-                runV += order[-2]
+                runNV += order[-2]
+                runV += order[-2] * order[0]
                 runP = order[0]
-                print("order:", order, "runP:", runP, "runV:", runV)
-                if runV >= n:
+                print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
+                if runNV >= n:
                     print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
-                    print("order:", order, "runP:", runP, "runV:", runV)
+                    print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                     print("Ticker:", ticker, "flag:", flag, "n:", n)
                     break
 
         if flag == "-p":
             if n > midpoint:
                 for order in orders['SELL']:
-                    runV += order[-2]
+                    runNV += order[-2]
+                    runV += order[-2] * order[0]
                     runP = order[0]
-                    print("order:", order, "runP:", runP, "runV:", runV)
+                    print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                     if runP >= n:
                         print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
-                        print("order:", order, "runP:", runP, "runV:", runV)
+                        print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                         print("Ticker:", ticker, "flag:", flag, "n:", n)
                         break
 
             elif n < midpoint:
                 for order in orders['BUY']:
-                    runV += order[-2]
+                    runNV += order[-2]
+                    runV += order[-2] * order[0]
                     runP = order[0]
-                    print("order:", order, "runP:", runP, "runV:", runV)
+                    print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                     if runP <= n:
                         print("\n!!!!!!!!!!!!Limit Found!!!!!!!!!!!!!!!!!!")
-                        print("order:", order, "runP:", runP, "runV:", runV)
+                        print("order:", order, "runP:", runP, "runNV:", runNV, "runV:", runV)
                         print("Ticker:", ticker, "flag:", flag, "n:", n)
                         break
 

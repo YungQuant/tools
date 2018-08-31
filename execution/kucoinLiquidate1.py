@@ -69,49 +69,37 @@ def filterBalances(balances):
     return retBals
 
 args = sys.argv
+ticker, account, amount, sp = args[1], args[2], float(args[3])
 
-ticker, quantity, above, account = args[1], float(args[2]), float(args[3]), args[4]
 if account == "personal":
     client = Client(
             api_key='5b7dfd773232924f8607f128',
             api_secret='5e399779-df87-4980-b392-36130d2be4ee')
-elif account == "wc":
-    api_key="5b648d9908d8b114d114636f"
-    api_secret="7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
-    client = Client(api_key, api_secret)
 elif account == "temp":
     client = Client(
         api_key='5b88e20991ed2916697b54b9',
         api_secret='d4e64666-39e9-4fea-85f5-e9d052dee0ec')
-
+else:
+    api_key = "5b648d9908d8b114d114636f"
+    api_secret = "7a0c3a0e-1fc8-4f24-9611-e227bde6e6e0"
+    client = Client(api_key, api_secret)
 #ticker, quantity, above = "ETH-BTC", 1, 0
-sQuantity = quantity
+
 timeCnt = 0
 starttime = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
 
 while(1):
     try:
-        print("Kucoin AutoAsk Version 1.1 -yungquant")
-        print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity, "above:", above)
-        balances = filterBalances(client.get_all_balances())
-        print("balances:", balances)
-        timeStr = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%Z")
-        orders = client.get_order_book(ticker, limit=99999)
-        midpoint = np.mean([orders['BUY'][0][0], orders['SELL'][0][0]])
-        print("starttime:", starttime, "time:", timeStr, "midpoint", midpoint)
-        if midpoint > above:
-            print("client.cancel_all_orders(ticker)")
-            print(client.cancel_all_orders(ticker))
-
-            avgVol = np.mean([float(order[-1]) for order in orders['SELL'][:10]])
-            # if avgVol > balances[ticker[:3]]:
-            #     avgVol = balances[ticker[:3]]
-            print("client.create_sell_order(", ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0]))), ")")
-            print(client.create_sell_order(ticker, str(float(orders['SELL'][0][0])), str(np.floor(avgVol / float(orders['SELL'][0][0])))))
+        print("Kucoin Liquidate Version 1 -yungquant")
+        print("Ticker:", ticker, "Account:", account)
+        time.sleep(5)
+        while(1):
+            print("client.create_sell_order(", ticker, sp, str(amount), ")")
+            print(client.create_sell_order(ticker, str(sp), str(amount)))
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
-        time.sleep(10)
+        time.sleep(1)
     except:
         print("FUUUUUUUUUUCK",  sys.exc_info())
 

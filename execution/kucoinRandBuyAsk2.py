@@ -105,8 +105,6 @@ while(1):
         t = np.random.uniform(r1, r2)
         print("try:", t, " > ", T, "?")
         if t > T:
-            print("client.cancel_all_orders(ticker)")
-            print(client.cancel_all_orders(ticker))
             if quantity <= aVol:
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)

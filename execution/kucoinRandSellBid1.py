@@ -90,7 +90,7 @@ while(1):
         bVol, aVol = float(orders['BUY'][0][2]), float(orders['SELL'][0][2])
         spread = ask - bid
         spreads.append(spread)
-        print("Kucoin RandBuyAsk Version 1 -yungquant")
+        print("Kucoin RandSellBid Version 1 -yungquant")
         print("Ticker:", ticker, "sQuantity:", sQuantity, "Quantity:", quantity)
         print("sBals:", sBals, "bals:", filterBalances(client.get_all_balances()))
         print("starttime:", starttime, "time:", timeStr)
@@ -103,8 +103,8 @@ while(1):
                 print("quantity <= aVol", quantity, aVol)
                 exit(code=0)
             ov = np.random.uniform(s1, s2)
-            print("client.create_buy_order(", ticker, ask, ov, ")")
-            print(client.create_buy_order(ticker, str(ask), str(ov)[:6]))
+            print("client.create_sell_order(", ticker, ask, ov, ")")
+            print(client.create_sell_order(ticker, str(ask), str(ov)[:6]))
             quantity -= ov
 
         timeCnt += 1

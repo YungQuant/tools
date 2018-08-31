@@ -128,6 +128,10 @@ if account == "personal":
     client = Client(
         api_key='5b7dfd773232924f8607f128',
         api_secret='5e399779-df87-4980-b392-36130d2be4ee')
+elif account == "temp":
+    client = Client(
+        api_key='5b88e20991ed2916697b54b9',
+        api_secret='d4e64666-39e9-4fea-85f5-e9d052dee0ec')
 else:
     client = Client(
         api_key='5b648d9908d8b114d114636f',
@@ -150,6 +154,8 @@ while (1):
         print("sBals:", sBals, "bals:", bals)
         btcB, ethB, omxB = float(sBals[1]) - float(bals[1]), float(sBals[3]) - float(bals[3]), float(sBals[5]) - float(bals[5])
         print("BTC burn:", btcB, "ETH burn:", ethB, "OMX burn:", omxB)
+        if timeCnt > 6:
+            print("BTC burn per hour:", (btcB / timeCnt) * 360, "ETH burn per hour:", (ethB / timeCnt) * 360, "OMX burn per hour:", (omxB / timeCnt) * 360)
         print("price:", midpoint, "\n")
         dealt_orders = filter_dealt_orders(client.get_dealt_orders(ticker))
         buys, sells, bps, sps = [], [], [], []
