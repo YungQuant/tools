@@ -92,7 +92,7 @@ while(1):
     try:
         print("Kucoin Liquidate Version 1 -yungquant")
         print("Ticker:", ticker, "Account:", account)
-        time.sleep(5)
+        time.sleep(1)
         while(1):
             print("client.create_sell_order(", ticker, sp, str(amount), ")")
             print(client.create_sell_order(ticker, str(sp), str(amount)))

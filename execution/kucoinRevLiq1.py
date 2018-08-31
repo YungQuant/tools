@@ -91,7 +91,7 @@ while(1):
     try:
         print("Kucoin RevLiq Version 1 -yungquant")
         print("Ticker:", ticker, "Account:", account)
-        time.sleep(5)
+        time.sleep(1)
         while(1):
             print("client.create_buy_order(", ticker, price, str(amount), ")")
             print(client.create_buy_order(ticker, str(price), str(amount)))
