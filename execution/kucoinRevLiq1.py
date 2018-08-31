@@ -95,6 +95,7 @@ while(1):
         while(1):
             print("client.create_buy_order(", ticker, price, str(amount), ")")
             print(client.create_buy_order(ticker, str(price), str(amount)))
+            time.sleep(1)
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
