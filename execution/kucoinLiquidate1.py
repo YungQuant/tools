@@ -96,6 +96,7 @@ while(1):
         while(1):
             print("client.create_sell_order(", ticker, sp, str(amount), ")")
             print(client.create_sell_order(ticker, str(sp), str(amount)))
+            time.sleep(0.5)
 
         timeCnt += 1
         print("timeCnt:", timeCnt, "\n")
