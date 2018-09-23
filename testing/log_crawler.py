@@ -6,11 +6,11 @@ import re
 outputs = []
 fileCuml = []
 best = {}; kurt = []; bests = []
-env = "output/"
+env, env1 = "output/", "output"
 
 
 # 1. load all the logs in output
-log_file_names = os.listdir('output')
+log_file_names = os.listdir(env1)
 
 def get_num(str):
     tmp = ""
@@ -42,13 +42,15 @@ for fi, filename in enumerate(log_file_names):
             anal['k'] = parse_line(line)
         if line.find("D") == 0:
             anal['d'] = parse_line(line)
-        if line.find("mdd") == 0:
+        if line.find("Len") == 0:
+            anal['len'] = parse_line(line)
+        if line.find("MDD") == 0:
             anal['mdd'] = parse_line(line)
         if line.find("bitchCunt") == 0:
             anal['bc'] = parse_line(line)
         if line.find("Cumulative") > 5:
             anal['cuml'] = parse_line(line)
-            if anal['cuml'] > 1.3:
+            if anal['cuml'] > 1.01 and anal['cuml'] < 1.5 and anal['len'] > 3:
                 anals.append(anal)
             anal = {}
 
@@ -71,8 +73,12 @@ for i, anal in enumerate(anals):
         simk = similar(anal['k'], anal2['k'])
         simd = similar(anal['d'], anal2['d'])
         simbc = similar(anal['bc'], anal2['bc'])
-        if simk and simd and simbc:
-            similar_anals.append([anal, anal2])
+        if anal['filename'] != anal2['filename']:
+            if simk and simd and simbc:
+                similar_anals.append([anal, anal2])
+
+
+similar_anals = sorted(similar_anals, key=lambda k: k[0]['cuml'])
 
 for i in range(len(similar_anals)):
     print("\nsimilar_anal: ", similar_anals[i])
