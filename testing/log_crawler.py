@@ -29,8 +29,8 @@ anals = []
 
 
 for fi, filename in enumerate(log_file_names):
-    print("fi: ", fi)
-    print("file: ", filename)
+    # print("fi: ", fi)
+    # print("file: ", filename)
 
     fp = open("output/" + filename)
 
@@ -48,22 +48,23 @@ for fi, filename in enumerate(log_file_names):
             anal['bc'] = parse_line(line)
         if line.find("Cumulative") > 5:
             anal['cuml'] = parse_line(line)
-            anals.append(anal)
+            if anal['cuml'] > 1.3:
+                anals.append(anal)
             anal = {}
 
 
     fp.close()
 
 def similar(a, b):
-    diff = b - a
-    tolerance = a * 0.018 # TODO: tune this percentage in
+    diff = abs(b - a)
+    tolerance = a * 0.0 # TODO: tune this percentage in
     return diff <= tolerance
 
 
 # we want to find instances where K, D, and bitchCunt are similar accross different timeframes/fidelities and currencies
 # compare every entry with every other entry for similarities
 
-print("anals: ", anals)
+#print("anals: ", anals)
 similar_anals = []
 for i, anal in enumerate(anals):
     for k, anal2 in enumerate(anals[i + 1:]):
@@ -73,4 +74,5 @@ for i, anal in enumerate(anals):
         if simk and simd and simbc:
             similar_anals.append([anal, anal2])
 
-print("similar_anals: ", similar_anals)
+for i in range(len(similar_anals)):
+    print("\nsimilar_anal: ", similar_anals[i])
