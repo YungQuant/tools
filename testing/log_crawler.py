@@ -10,6 +10,7 @@ env, env1 = "output/", "output"
 
 
 # 1. load all the logs in output
+
 log_file_names = os.listdir(env1)
 
 def get_num(str):
@@ -32,7 +33,7 @@ for fi, filename in enumerate(log_file_names):
     # print("fi: ", fi)
     # print("file: ", filename)
 
-    fp = open("output/" + filename)
+    fp = open("testing/output/" + filename)
 
     anal = {}
     for li, line in enumerate(fp):
@@ -66,10 +67,11 @@ def similar(a, b):
 # we want to find instances where K, D, and bitchCunt are similar accross different timeframes/fidelities and currencies
 # compare every entry with every other entry for similarities
 
-#print("anals: ", anals)
 similar_anals = []
 for i, anal in enumerate(anals):
     for k, anal2 in enumerate(anals[i + 1:]):
+        if anal['filename'] == anal2['filename']: # don't compare stuff in same file
+            continue
         simk = similar(anal['k'], anal2['k'])
         simd = similar(anal['d'], anal2['d'])
         simbc = similar(anal['bc'], anal2['bc'])
