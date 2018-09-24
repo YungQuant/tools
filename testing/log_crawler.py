@@ -6,7 +6,7 @@ import re
 outputs = []
 fileCuml = []
 best = {}; kurt = []; bests = []
-env, env1 = "output/", "output"
+env, env1 = "seg_output/bbBreak/eos/", "seg_output/bbBreak/eos/"
 
 
 # 1. load all the logs in output
@@ -33,7 +33,7 @@ for fi, filename in enumerate(log_file_names):
     # print("fi: ", fi)
     # print("file: ", filename)
 
-    fp = open("testing/output/" + filename)
+    fp = open(env + filename)
 
     anal = {}
     for li, line in enumerate(fp):
@@ -51,7 +51,7 @@ for fi, filename in enumerate(log_file_names):
             anal['bc'] = parse_line(line)
         if line.find("Cumulative") > 5:
             anal['cuml'] = parse_line(line)
-            if anal['cuml'] > 1.01 and anal['cuml'] < 1.5 and anal['len'] > 3:
+            if anal['cuml'] > 1.01 and anal['cuml'] < 1.5 and anal['len'] > 3 and anal['len'] < 300 and (anal['cuml'] - 1) > anal['mdd']:
                 anals.append(anal)
             anal = {}
 

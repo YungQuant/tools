@@ -301,17 +301,17 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
     Dvl = Kvl; s1ar = []; s2ar = []; shortDiff = []; cuml = 1.0; mdd = 0
     position = 0
     stopLoss = False
-    bull = 0; shit = 0; maxP = 0; minP = 0
+    bull = 0; shit = 0; maxP = 0; minP = 0;
 
     for i, closeData in enumerate(stock):
         arr.append(closeData)
         if i > max([Kin, Din]):
             lb, md, ub = BBn(arr, int(np.floor(Kin)), Din, Din)
-            if ((closeData > ub) and position == (-1 or 0)):
+            if ((closeData < lb) and position == (-1 or 0)):
                 buy.append(closeData * (1 + tradeCost))
                 bull += 1
                 position = 1
-            elif (closeData < lb) and position == (1 or 0):
+            elif (closeData > ub) and position == (1 or 0):
                 sell.append(closeData * (1 - tradeCost))
                 maxP = 0
                 shit += 1
@@ -386,7 +386,7 @@ fileOutput = []
 fileCuml = []
 dataset = []
 for i, tick in enumerate(ticker):
-    orders = load_bitmex_data(tick, "1m", n_periods=666)
+    orders = load_bitmex_data(tick, "hourly", n_periods=666)
     print(tick, ":", len(orders))
     ps = [order[-2] for order in orders if isFloat(order[-2])]
     ps = orders.ix[:, 'close']
@@ -394,7 +394,7 @@ for i, tick in enumerate(ticker):
 
 for i, tick in enumerate(ticker):
     #fileOutput.append(tick)
-    fileOutput.append("./output/bbBreak_1m" + tick + "_9.24.18_output.txt")
+    fileOutput.append("./output/bbBounce_1h" + tick + "_9.24.18_output.txt")
 #
 # for i, file in enumerate(fileTicker):
 #     if (os.path.isfile(file) == False):
@@ -417,7 +417,7 @@ def run():
                 #while (d < d2):
                     #while (s < s2):
                 if i > 0:
-                    if k % 30 == 0: print(i, "/", l2, int(np.floor(k)), "/", k2, j, "/", j2)
+                    if k % 10 == 0: print(i, "/", l2, int(np.floor(k)), "/", k2, j, "/", j2)
                     pillowcaseAssassination(dataset, k, i, fileOutput, save_max=1.02, max_len=3000000, bitchCunt=j, tradeCost=0.0025)
                     #     if (s < 10):
                     #         s += 1
