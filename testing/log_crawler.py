@@ -63,21 +63,52 @@ def similar(a, b):
     tolerance = a * 0.0 # TODO: tune this percentage in
     return diff <= tolerance
 
-
 # we want to find instances where K, D, and bitchCunt are similar accross different timeframes/fidelities and currencies
-# compare every entry with every other entry for similarities
+def close_enough(a1, a2):
+    if a1['filename'] == a2['filename']: # don't compare stuff in same file
+            return False
+    simk = similar(a1['k'], a2['k'])
+    simd = similar(a1['d'], a2['d'])
+    simbc = similar(a1['bc'], a2['bc'])
+    if a1['filename'] != a2['filename']:
+        if simk and simd and simbc:
+            return True
 
+# two sets of two similar anals should be 1 group of 4 similar anals
+def clumpable(c1, c2):
+    return close_enough(c1[0], c2[0])
+
+
+# compare every entry with every other entry for similarities
 similar_anals = []
-for i, anal in enumerate(anals):
-    for k, anal2 in enumerate(anals[i + 1:]):
-        if anal['filename'] == anal2['filename']: # don't compare stuff in same file
-            continue
-        simk = similar(anal['k'], anal2['k'])
-        simd = similar(anal['d'], anal2['d'])
-        simbc = similar(anal['bc'], anal2['bc'])
-        if anal['filename'] != anal2['filename']:
-            if simk and simd and simbc:
-                similar_anals.append([anal, anal2])
+for anal in anals:
+    for anal2 in anals[i + 1:]:
+        if close_enough(anal, anal2):
+            similar_anals.append([anal, anal2])
+
+# Use it on strategy/pair subsets one find input values present in all of that subsets log files
+# Currently sorts in pairs as opposed to sets
+#     ideally sets of inputs found in all or most of given files
+def clump():
+    clumped = False
+    for i in range(len(similar_anals)):
+        for j in range(len(similar_anals[i + 1:])):
+            if i > len(similar_anals) or j > len(similar_anals):
+                clumped = True
+                break #this could do better than break
+            if clumpable(similar_anals[i], similar_anals[j]):
+                clumped = True
+                for anal in similar_anals[j]: # 2, 3, 4+ anals
+                    similar_anals[i].append(anal)
+                del similar_anals[j]
+    return clumped
+
+more_grouped = clump()
+while more_grouped:
+    more_grouped = clump()
+
+
+
 
 
 similar_anals = sorted(similar_anals, key=lambda k: k[0]['cuml'])
