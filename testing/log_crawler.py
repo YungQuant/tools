@@ -81,7 +81,7 @@ def clumpable(c1, c2):
 
 # compare every entry with every other entry for similarities
 similar_anals = []
-for anal in anals:
+for i, anal in enumerate(anals):
     for anal2 in anals[i + 1:]:
         if close_enough(anal, anal2):
             similar_anals.append([anal, anal2])
@@ -106,10 +106,6 @@ def clump():
 more_grouped = clump()
 while more_grouped:
     more_grouped = clump()
-
-
-
-
 
 similar_anals = sorted(similar_anals, key=lambda k: k[0]['cuml'])
 
