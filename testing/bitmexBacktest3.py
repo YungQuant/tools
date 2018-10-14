@@ -1,13 +1,15 @@
 import ccxt
 import sklearn as sk
 import requests, pandas as pan
-import os, scipy as sp
+import os
 from joblib import Parallel, delayed
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import svm, linear_model
 from sklearn.metrics import mean_squared_error
 import numpy as np
+import warnings
+warnings.filterwarnings(action="ignore", module="sklearn", message="^internal gelsd")
 
 exchange = ccxt.bitmex()
 ''' TESTNET BITMEX 0'''
@@ -202,6 +204,30 @@ def create_dataset(dataset, look_back):
             dataX.append(dataset[i-look_back:i])
             dataY.append(dataset[i])
     return np.array(dataX), np.array(dataY)
+
+def create_binary_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)):
+        if i > look_back:
+            dataX.append(dataset[i-look_back:i])
+            if dataset[i] > dataset[i-1]:
+                dataY.append(1)
+            else:
+                dataY.append(0)
+    return np.array(dataX), np.array(dataY)
+
+def create_bounded_binary_dataset(dataset, look_back, b=0.01):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        if i > look_back:
+            dataX.append(dataset[i-look_back:i])
+            if dataset[i] > dataset[i-1] * (1 + b):
+                dataY.append(1)
+            elif dataset[i] < dataset[i-1] * (1 - b):
+                dataY.append(-1)
+            else:
+                dataY.append(0)
+    return np.array(dataX), np.array(dataY)
 #
 # currency_pairs, currencies = ['LTCU18'], ['ltc']
 # errs = []
@@ -305,13 +331,17 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
 
     for i, closeData in enumerate(stock):
         arr.append(closeData)
-        if i > max([Kin, Din]):
-            lb, md, ub = BBn(arr, int(np.floor(Kin)), Din, Din)
-            if ((closeData < lb) and position == -1 or position == 0):
-                buy.append(closeData * (1 + tradeCost))
+        if i > Kin:
+            trainX, trainY = create_dataset(arr, Din)
+            model = linear_model.RANSACRegressor()
+            model.fit(trainX, trainY)
+            rarr = np.reshape(arr[-Din:], [1, -1])
+            p = model.predict(rarr)
+            if ((p > closeData) and position == -1 or position == 0):
+                buy.append(closeData * (1+tradeCost))
                 bull += 1
                 position = 1
-            elif (closeData > ub) and position == 1 or position == 0:
+            elif (p < closeData) and position == 1 or position == 0:
                 sell.append(closeData * (1 - tradeCost))
                 maxP = 0
                 shit += 1
@@ -324,15 +354,15 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
                 minP = closeData
             elif position == 1 or position == 0:
                 minP = closeData
-                # DYNAMIC BITCHCUNT DISTANCE IN DEVELOPMENT
-                # WILL BE BASED ON ANALYSIS OF VARIANCE, AND CORRELATION WITH ENVIRONMENTAL VOLITILITY
-            if (closeData < (maxP * (1 - bitchCunt)) and position == 1):
-                sell.append(closeData * (1 - tradeCost))
+            #DYNAMIC BITCHCUNT DISTANCE IN DEVELOPMENT
+            #WILL BE BASED ON ANALYSIS OF VARIANCE, AND CORRELATION WITH ENVIRONMENTAL VOLITILITY
+            if (closeData < (maxP * (1-bitchCunt)) and position == 1):
+                sell.append(closeData * (1-tradeCost))
                 maxP = 0
                 shit += 1
                 position = -1
             if (closeData > (minP * (1 + bitchCunt)) and position == -1):
-                buy.append(closeData * (1 + tradeCost))
+                buy.append(closeData * (1+tradeCost))
                 shit += 1
                 position = 1
     if position == 1:
@@ -371,7 +401,7 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
 
 def pillowcaseAssassination(data, k, i, fileOutput, save_max, max_len, bitchCunt, tradeCost):
     #print("Assasinating, w/pillows")
-    n_proc = 20; verbOS = 0; inc = 0
+    n_proc = 1; verbOS = 0; inc = 0
     Parallel(n_jobs=n_proc, verbose=verbOS)(delayed(fucking_paul)
             (data[inc], fileOutput[inc], k, i, save_max, max_len, bitchCunt, tradeCost)
             for inc in range(len(data)))
@@ -386,7 +416,7 @@ fileOutput = []
 fileCuml = []
 dataset = []
 for i, tick in enumerate(ticker):
-    orders = load_bitmex_data(tick, "hourly", n_periods=666)
+    orders = load_bitmex_data(tick, "1m", n_periods=666)
     print(tick, ":", len(orders))
     ps = [order[-2] for order in orders if isFloat(order[-2])]
     ps = orders.ix[:, 'close']
@@ -394,7 +424,7 @@ for i, tick in enumerate(ticker):
 
 for i, tick in enumerate(ticker):
     #fileOutput.append(tick)
-    fileOutput.append("./output/bbBounce_1h" + tick + "_10.2.18_output.txt")
+    fileOutput.append("./output/ransac_1m" + tick + "_9.27.18_output.txt")
 #
 # for i, file in enumerate(fileTicker):
 #     if (os.path.isfile(file) == False):
@@ -404,8 +434,8 @@ for i, tick in enumerate(ticker):
 
 
 def run():
-    k1 = 20; k2 = 300
-    l1 = 0.1; l2 = 2.9
+    k1 = 400; k2 = 500
+    l1 = 3; l2 = 30
     # d1 = 2; d2 = 300
     # s1 = 2; s2 = 30
     j1 = 0.001; j2 = 0.1
@@ -418,7 +448,7 @@ def run():
                     #while (s < s2):
                 if i > 0:
                     if k % 10 == 0: print(i, "/", l2, int(np.floor(k)), "/", k2, j, "/", j2)
-                    pillowcaseAssassination(dataset, k, i, fileOutput, save_max=1.02, max_len=3000000, bitchCunt=j, tradeCost=0.0025)
+                    pillowcaseAssassination(dataset, k, i, fileOutput, save_max=1.001, max_len=3000000, bitchCunt=j, tradeCost=0.0025)
                     #     if (s < 10):
                     #         s += 1
                     #     else:
@@ -434,12 +464,12 @@ def run():
                 else:
                     j *= 1.3
             j = j1
-            i += 0.05
+            i += 1
         i = l1
         if (k < 10):
             k += 1
         elif (k < 1000):
-            k *= 1.2
+            k += 50
         elif (k < 10000):
             k *= 1.05
         else:

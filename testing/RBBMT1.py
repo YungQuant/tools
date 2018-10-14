@@ -48,9 +48,10 @@ def load_bitmex_data(symbol, time_frequency, n_periods=500, baseURI='https://www
 
     return reformatted_data[::-1].reset_index(drop='index')
 
-currency_pairs, currencies = ['LTCU18'], ['ltc']
+currency_pairs, currencies = ['LTCZ18'], ['ltc']
 
 #print(exchange.create_order(currency_pairs[0], ))
 # orders = exchange.fetch_ohlcv(symbol=currency_pairs[0], timeframe='1h')
 # ps = [order[-2] for order in orders]
-print(load_bitmex_data("LTCU18", 'hourly').ix[0, :])
+#print(load_bitmex_data("LTCU18", 'hourly').ix[0, :])
+print(exchange.fetch_order_book(currency_pairs[0], limit=666)['bids'])

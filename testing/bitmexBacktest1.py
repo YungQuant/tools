@@ -307,22 +307,22 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
         arr.append(closeData)
         if i > max([Kin, Din]):
             lb, md, ub = BBn(arr, int(np.floor(Kin)), Din, Din)
-            if ((closeData > ub) and position == (-1 or 0)):
+            if ((closeData > ub) and position == -1 or position == 0):
                 buy.append(closeData * (1 + tradeCost))
                 bull += 1
                 position = 1
-            elif (closeData < lb) and position == (1 or 0):
+            elif (closeData < lb) and position == 1 or position == 0:
                 sell.append(closeData * (1 - tradeCost))
                 maxP = 0
                 shit += 1
                 position = -1
             if position == 1 and closeData > maxP:
                 maxP = closeData
-            elif position == (0 or -1):
+            elif position == 0 or position == -1:
                 maxP = closeData
             if position == -1 and closeData < minP:
                 minP = closeData
-            elif position == (0 or 1):
+            elif position == 0 or position == 1:
                 minP = closeData
                 # DYNAMIC BITCHCUNT DISTANCE IN DEVELOPMENT
                 # WILL BE BASED ON ANALYSIS OF VARIANCE, AND CORRELATION WITH ENVIRONMENTAL VOLITILITY
@@ -358,7 +358,7 @@ def fucking_paul(stock, log, Kin, Din, save_max, max_len, bitchCunt, tradeCost):
             if dd > mdd:
                 mdd = dd
 
-    print("tik:", log, "cuml:", cuml)
+    #print("tik:", log, "cuml:", cuml)
 
     if cuml > save_max and len(perc) <= max_len:
         write_that_shit(log, Kin, Din, perc, cuml, mdd, bitchCunt)
@@ -380,7 +380,7 @@ def pillowcaseAssassination(data, k, i, fileOutput, save_max, max_len, bitchCunt
 
 
 #ticker = ["BTC-XMR", "BTC-DASH", "BTC-MAID", "BTC-LTC", "BTC-XRP", "BTC-ETH"]
-ticker = ["XBTUSD", "ETHUSD", "XRPU18", "TRXU18", "LTCU18", "EOSU18", "ADAU18", "BCHU18", "XRPU18"]
+ticker = ["XBTUSD", "ETHUSD", "XRPZ18", "TRXZ18", "LTCZ18", "EOSZ18", "ADAZ18", "BCHZ18", "XRPZ18"]
 fileTicker = []
 fileOutput = []
 fileCuml = []
@@ -394,7 +394,7 @@ for i, tick in enumerate(ticker):
 
 for i, tick in enumerate(ticker):
     #fileOutput.append(tick)
-    fileOutput.append("./output/bbBreak_1m" + tick + "_9.24.18_output.txt")
+    fileOutput.append("./output/bbBreak_1m" + tick + "_10.7.18_output.txt")
 #
 # for i, file in enumerate(fileTicker):
 #     if (os.path.isfile(file) == False):
