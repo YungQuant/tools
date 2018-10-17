@@ -8,9 +8,9 @@ import time
 
 # get all the active markets
 instruments = requests.get("https://www.bitmex.com/api/v1/instrument/active").json()
-symbols = [ i["symbol"] for i in instruments ]
+symbols = [i["symbol"] for i in instruments]
 
-print("scraping minute data for: ", symbols)
+
 url = "https://www.bitmex.com/api/v1/orderBook/L2"
 
 
@@ -30,7 +30,8 @@ def write_that_shit(filename, orderbook):
 
 
 while True:
+    print("scraping minute data for: ", symbols)
     for s in symbols:
-        json = requests.get(url, params={ "symbol": s, "depth": 1 }).json()
-        write_that_shit("output/" + s + "_1min.txt", json)
-    time.sleep(6)
+        json = requests.get(url, params={"symbol": s, "depth": 1}).json()
+        write_that_shit("output/bitmex_" + s + "_1min.txt", json)
+    time.sleep(60)
