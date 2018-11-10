@@ -1,4 +1,4 @@
-import ccxt
+import ccxt, os
 import sklearn as sk
 import requests, pandas as pan
 from sklearn.preprocessing import MinMaxScaler
@@ -10,6 +10,18 @@ exchange = ccxt.bitmex()
 exchange.apiKey = 'XisZrCcq4qDmLhs2T53MpFMJ'
 exchange.secret = 'ApEVapMkwqiEhV3FGr7NPjZHPG7P8xPAbtHxrbEs5RxA8NDz'
 
+def get_CDD_data(currency, interval='1h'):
+    filename = f'../../prop/cDDdata/{currency}_{interval}.csv'
+    data = []
+    if os.path.isfile(filename) == False:
+        print(f'could not source ../../prop/cDDdata/{currency}_{interval}.csv data')
+    else:
+        fileP = open(filename, "r")
+        lines = fileP.readlines()
+        for i, line in enumerate(lines):
+            linex = line.split(",")[2:6]
+            data.append(linex)
+    return reversed(data[2:])
 
 def load_bitmex_data(symbol, time_frequency, n_periods=500, baseURI='https://www.bitmex.com/api/v1'):
     '''
@@ -71,26 +83,102 @@ def create_binary_dataset(dataset, look_back):
     dataX, dataY = [], []
     for i in range(len(dataset)-1):
         if i > look_back:
-            dataX.append(dataset[i-look_back:i])
-            if dataset[i+1] > dataset[i]:
+            #dataX.append(dataset[i-look_back:i])
+
+            datum = []
+            nS = dataset[i-look_back:i]
+            for k in range(len(nS)):
+                for j in range(len(nS[k])):
+                    datum.append(nS[k][j])
+            dataX.append(datum)
+
+            if dataset[i+1][-1] > dataset[i][-1]:
                 dataY.append(1)
             else:
                 dataY.append(0)
     return np.array(dataX), np.array(dataY)
+
+def create_bounded_binary_dataset(dataset, look_back, b=0.01):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        if i > look_back:
+            dataX.append(dataset[i-look_back:i])
+            if dataset[i] > dataset[i-1] * (1 + b):
+                dataY.append(1)
+            elif dataset[i] < dataset[i-1] * (1 - b):
+                dataY.append(-1)
+            else:
+                dataY.append(0)
+    return np.array(dataX), np.array(dataY)
+
+def create_binary_ohlcv_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        datum = []
+        if i > look_back:
+            for k in range(len(dataset[i-look_back:i])):
+                for j in range(len(dataset[i-look_back:i][k])):
+                    datum.append(dataset[i-look_back:i][k][j])
+            dataX.append(datum)
+            if dataset[i+1][-1] > dataset[i][-1]:
+                dataY.append(1)
+            else:
+                dataY.append(0)
+    return np.array(dataX), np.array(dataY)
+
+def create_change_ohlcv_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        datum = []
+        if i > look_back:
+            for k in range(len(dataset[i-look_back:i])):
+                for j in range(len(dataset[i-look_back:i][k])):
+                    datum.append(dataset[i-look_back:i][k][j])
+            dataX.append(datum)
+            dataY.append((dataset[i+1][-1] - dataset[i][-1]) / dataset[i][-1])
+    return np.array(dataX), np.array(dataY)
+
+def create_ohlcv_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        datum = []
+        if i > look_back:
+            for k in range(len(dataset[i-look_back:i])):
+                for j in range(len(dataset[i-look_back:i][k])):
+                    datum.append(dataset[i-look_back:i][k][j])
+            dataX.append(datum)
+
+            dataY.append(dataset[i+1][-1])
+    return np.array(dataX), np.array(dataY)
+
+def disectPanda(panda):
+    bodyParts = []
+    for i in range(len(panda.ix[:, 'close'])):
+        bodyParts.append([panda.ix[i, 'open'], panda.ix[i, 'high'], panda.ix[i, 'low'], panda.ix[i, 'close']])
+    return bodyParts
 
 currency_pairs, currencies = ["XBTUSD", "ETHUSD", "XRPU18", "TRXU18", "LTCU18", "EOSU18", "ADAU18", "BCHU18", "XRPU18"], ['ltc', 'xbt']
 errs, passes, fails = [], 0, 0
 
 #print(exchange.create_order(currency_pairs[0], ))
 #orders = exchange.fetch_ohlcv(symbol=currency_pairs[0], timeframe='1m')
-orders = load_bitmex_data(currency_pairs[1], "hourly", n_periods=666)
+orders1 = load_bitmex_data(currency_pairs[0], "hourly", n_periods=666)
+orders = get_CDD_data("BTCUSD")
 #print(orders)
 #ps = [order[-2] for order in orders if isFloat(order[-2])]
-ps = orders.ix[:, 'close']
+ps = [[float(order[0]), float(order[1]), float(order[2]), float(order[3])] for order in orders]
+ps1 = disectPanda(orders1)
+print("order0:\n", ps[0])
 print("len(ps):", len(ps))
-X, Y = create_dataset(ps, 10)
-
-trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.2))], Y[:int(np.floor(len(X)/1.2))], X[int(np.floor(len(X)/1.2)):], Y[int(np.floor(len(X)/1.2)):]
+print("order1[0]:\n", ps1[0])
+print("len(ps1):", len(ps1))
+X, Y = create_change_ohlcv_dataset(ps, 30)
+X1, Y1 = create_change_ohlcv_dataset(ps1, 30)
+print(np.random.shuffle(X))
+np.random.shuffle(X); np.random.shuffle(Y); np.random.shuffle(X1); np.random.shuffle(Y1)
+trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.1))], Y[:int(np.floor(len(X)/1.1))], X[int(np.floor(len(X)/1.1)):], Y[int(np.floor(len(X)/1.1)):]
+trainX1, trainY1, testX1, testY1 = X1[:int(np.floor(len(X1)/9.9))], Y1[:int(np.floor(len(X1)/9.9))], X1[int(np.floor(len(X1)/9.9)):], Y1[int(np.floor(len(X1)/9.9)):]
+print(testX[0], testY[0], "\n", testX1[0], testY1[0])
 
 ''' !!HIGHLIGHTS!!'''
 
@@ -103,6 +191,7 @@ trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.2))], Y[:int(np.floor(le
 # model = svm.LinearSVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
 # model = svm.NuSVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
 # model = svm.SVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.ARDRegression() # Mean % Error: 0.4951603400387173 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
 
 
 '''^^HIGHLIGHTS^^'''
@@ -127,41 +216,65 @@ trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.2))], Y[:int(np.floor(le
 # model = linear_model.ARDRegression() # Mean % Error: 0.005545638051673693
 # model = linear_model.RANSACRegressor() # Mean % Error: 0.00553197478063615
 
-''' VVV 1D / 10 WINDOW / XBTUSD CLOSE PRICES / RB API (666) VVV '''
-# model = linear_model.LinearRegression() # Mean % Error: 0.03693352582098423 Aggregate Binary Accuracy: 166 / 328 ABA%: 0.5060975609756098
-# model = linear_model.BayesianRidge()  # Mean % Error: 0.03698995730485125 Aggregate Binary Accuracy: 170 / 328 ABA%: 0.5182926829268293
-# model = linear_model.HuberRegressor() # Mean % Error: 0.0370754427298414 Aggregate Binary Accuracy: 170 / 328 ABA%: 0.5182926829268293
-# model = linear_model.Lars() # Mean % Error: 0.03693352582098393 Aggregate Binary Accuracy: 166 / 328 ABA%: 0.5060975609756098
-# model = linear_model.Lasso() # Mean % Error: 0.03695595972396475 Aggregate Binary Accuracy: 168 / 328 ABA%: 0.5121951219512195
-# model = linear_model.ARDRegression() # Mean % Error: 0.03683583461198292 Aggregate Binary Accuracy: 173 / 328 ABA%: 0.5274390243902439
-# model = linear_model.RANSACRegressor() # Mean % Error: 0.040087266016845084 Aggregate Binary Accuracy: 167 / 328 ABA%: 0.5091463414634146
+''' VVV 1D / 10 WINDOW / XBTUSD CLOSE PRICES / RB API (666) / BINARY VVV '''
+# model = linear_model.Perceptron() # Mean % Error: 0.4801223241590214 Aggregate Binary Accuracy: 170 / 327 ABA%: 0.5198776758409785
+# model = linear_model.HuberRegressor() # Mean % Error: 0.5135653468961192 Aggregate Binary Accuracy: 107 / 244 ABA%: 0.4385245901639344
+# model = linear_model.Ridge() # Mean % Error: 0.5579634378173305 Aggregate Binary Accuracy: 155 / 327 ABA%: 0.4740061162079511
+# model = linear_model.LinearRegression() # Mean % Error: 0.5579634613326042 Aggregate Binary Accuracy: 155 / 327 ABA%: 0.4740061162079511
+# model = linear_model.Lars() # Mean % Error: 0.5579634613325997 Aggregate Binary Accuracy: 155 / 327 ABA%: 0.4740061162079511
+# model = linear_model.Lasso() # Mean % Error: 0.538326051695379 Aggregate Binary Accuracy: 154 / 327 ABA%: 0.4709480122324159
+# model = linear_model.ARDRegression() # Mean % Error: 0.4951603400387173 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.PassiveAggressiveRegressor() # Mean % Error: 0.6520641656414019 Aggregate Binary Accuracy: 152 / 327 ABA%: 0.4648318042813456
+# model = linear_model.BayesianRidge() # Mean % Error: 0.5447277967128082 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = linear_model.ElasticNet() # Mean % Error: 0.5470797206607867 Aggregate Binary Accuracy: 153 / 327 ABA%: 0.46788990825688076
+# model = linear_model.LassoLarsIC() # Mean % Error: 0.5021317552162353 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = linear_model.PassiveAggressiveClassifier() # Mean % Error: 0.5229357798165137 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = linear_model.TheilSenRegressor() # Mean % Error: 0.7684008455130197 Aggregate Binary Accuracy: 144 / 327 ABA%: 0.44036697247706424
+# model = linear_model.SGDClassifier() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.OrthogonalMatchingPursuitCV() # Mean % Error: 0.5063444775502011 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
 
-''' VVV 1H / 10 WINDOW / XBTUSD CLOSE PRICES / RB API (666) VVV '''
-# model = linear_model.LinearRegression() # Mean % Error: 0.0030545224575498488 Aggregate Binary Accuracy: 167 / 328 ABA%: 0.5091463414634146
-# model = linear_model.BayesianRidge() # Mean % Error: 0.0030220528576657777 Aggregate Binary Accuracy: 164 / 328 ABA%: 0.5
-# model = linear_model.Ridge() # Mean % Error: 0.003054519166601958 Aggregate Binary Accuracy: 167 / 328 ABA%: 0.5091463414634146
-# model = linear_model.HuberRegressor() # Mean % Error: 0.002872631001823956 Aggregate Binary Accuracy: 167 / 328 ABA%: 0.5091463414634146
-# model = linear_model.Lars() # Mean % Error: 0.003054522457549964 Aggregate Binary Accuracy: 167 / 328 ABA%: 0.5091463414634146
-# model = linear_model.Lasso() # Mean % Error: 0.003053297027854984 Aggregate Binary Accuracy: 166 / 328 ABA%: 0.5060975609756098
-# model = linear_model.ARDRegression() # Mean % Error: 0.003000241405174242 Aggregate Binary Accuracy: 157 / 328 ABA%: 0.47865853658536583
-# model = linear_model.RANSACRegressor() # Mean % Error: 0.0029522941152967945 Aggregate Binary Accuracy: 170 / 328 ABA%: 0.5182926829268293
+# model = svm.LinearSVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = svm.NuSVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = svm.SVC() # Mean % Error: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
 
-''' VVV 1H / 10 WINDOW / ETHUSD CLOSE PRICES / RB API (666) VVV '''
-# model = linear_model.LinearRegression() # Mean % Error: 0.009570719660667037 Aggregate Binary Accuracy: 156 / 328 ABA%: 0.47560975609756095
-# model = linear_model.BayesianRidge() # Mean % Error: 0.009516228706952365 Aggregate Binary Accuracy: 155 / 328 ABA%: 0.4725609756097561
-# model = linear_model.Ridge() # Mean % Error: 0.00956969951019302 Aggregate Binary Accuracy: 156 / 328 ABA%: 0.47560975609756095
-# model = linear_model.HuberRegressor() # Mean % Error: 0.009038352922083697 Aggregate Binary Accuracy: 173 / 328 ABA%: 0.5274390243902439
-# model = linear_model.Lars() # Mean % Error: 0.009570719660666333 Aggregate Binary Accuracy: 156 / 328 ABA%: 0.47560975609756095
-# model = linear_model.Lasso() # Mean % Error: 0.009125875887741497 Aggregate Binary Accuracy: 156 / 328 ABA%: 0.47560975609756095
-# model = linear_model.ARDRegression() # Mean % Error: 0.00938238418705519 Aggregate Binary Accuracy: 150 / 328 ABA%: 0.4573170731707317
-model = linear_model.RANSACRegressor() # Mean % Error: 0.009344163704376495 Aggregate Binary Accuracy: 148 / 328 ABA%: 0.45121951219512196
+''' VVV 1H / 10 WINDOW / XBTUSD CLOSE PRICES / RB API (666) / BINARY VVV '''
+# model = linear_model.Perceptron() # Mean Error Margin: 0.5229357798165137 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = linear_model.HuberRegressor() # Mean Error Margin: 0.5046235528234105 Aggregate Binary Accuracy: 144 / 327 ABA%: 0.44036697247706424
+# model = linear_model.Ridge() # Mean Error Margin: 0.4964938076498626 Aggregate Binary Accuracy: 159 / 327 ABA%: 0.48623853211009177
+# model = linear_model.LinearRegression() # Mean Error Margin: 0.49649382667826353 Aggregate Binary Accuracy: 159 / 327 ABA%: 0.48623853211009177
+# model = linear_model.Lars() # Mean Error Margin: 0.4967295526693805 Aggregate Binary Accuracy: 155 / 327 ABA%: 0.4740061162079511
+# model = linear_model.Lasso() # Mean Error Margin: 0.5003288553958611 Aggregate Binary Accuracy: 134 / 327 ABA%: 0.40978593272171254
+# model = linear_model.ARDRegression() # Mean Error Margin: 0.4989479000084168 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.PassiveAggressiveRegressor() # Mean Error Margin: 0.5182991974582454 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = linear_model.BayesianRidge() # Mean Error Margin: 0.4971011183349104 Aggregate Binary Accuracy: 145 / 327 ABA%: 0.4434250764525994
+# model = linear_model.ElasticNet() # Mean Error Margin: 0.4978288993402717 Aggregate Binary Accuracy: 144 / 327 ABA%: 0.44036697247706424
+# model = linear_model.LassoLarsIC() # Mean Error Margin: 0.4960142358454866 Aggregate Binary Accuracy: 155 / 327 ABA%: 0.4740061162079511
+# model = linear_model.PassiveAggressiveClassifier() # Mean Error Margin: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.TheilSenRegressor() # Mean Error Margin: 0.4907877075391554 Aggregate Binary Accuracy: 161 / 327 ABA%: 0.4923547400611621
+# model = linear_model.SGDClassifier() # Mean Error Margin: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = linear_model.OrthogonalMatchingPursuitCV() # Mean Error Margin: 0.4997037142955298 Aggregate Binary Accuracy: 25 / 327 ABA%: 0.0764525993883792
+
+# model = svm.LinearSVC() # Mean Error Margin: 0.5229357798165137 Aggregate Binary Accuracy: 156 / 327 ABA%: 0.47706422018348627
+# model = svm.NuSVC() # Mean Error Margin: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+# model = svm.SVC() # Mean Error Margin: 0.47706422018348627 Aggregate Binary Accuracy: 171 / 327 ABA%: 0.5229357798165137
+
+''' VVV 1H / 10 WINDOW / BTCUSD CLOSE PRICES / CDD (11367) VVV '''
+# model = svm.SVC() # Mean Error Margin: 0.4902271526677232 Aggregate Binary Accuracy: 965 / 1893 ABA%: 0.5097728473322768
+# model = svm.LinearSVR() # Mean Error Margin: 0.4214659266851305 Aggregate Binary Accuracy: 1045 / 1893 ABA%: 0.5520338087691495
+# model = linear_model.SGDClassifier() # Mean Error Margin: 0.5066032752245113 Aggregate Binary Accuracy: 934 / 1893 ABA%: 0.4933967247754886
+# model = linear_model.ElasticNet() # Mean Error Margin: 0.4729519810127314 Aggregate Binary Accuracy: 1305 / 1893 ABA%: 0.6893819334389857
+model = linear_model.Perceptron(max_iter=10000)
 model.fit(trainX, trainY)
 
-for i in range(len(testX)):
-    sTXi = np.reshape(testX[i], [1, -1])
-    pY, rY = model.predict(sTXi), testY[i]
-    errP = abs(pY - rY) / rY
-    if (rY > testY[i-1] and pY > testY[i-1]) or (rY < testY[i-1] and pY < testY[i-1]):
+for i in range(len(testX1)):
+    sTXi = np.reshape(testX1[i], [1, -1])
+    pY, rY = model.predict(sTXi), testY1[i]
+    errP = abs(pY - rY)
+    # if (rY > testY1[i-1] and pY > testY1[i-1]) or (rY < testY1[i-1] and pY < testY1[i-1]):
+    #     passes += 1
+    # else:
+    #     fails += 1
+    if (rY > 0 and pY > 0) or (rY < 0 and pY < 0):
         passes += 1
     else:
         fails += 1
@@ -169,4 +282,4 @@ for i in range(len(testX)):
     print("sTXi:", sTXi)
     print("pY:", pY, "rY:", rY, "err %:", errP)
 
-print("\n\nMean % Error:", np.mean(errs), "Aggregate Binary Accuracy:", passes, "/", len(testX), "ABA%:", passes / len(testX))
+print("\n\nMean % Error:", np.mean(errs), "Aggregate Binary Accuracy:", passes, "/", len(testY1), "ABA%:", passes / len(testY1))

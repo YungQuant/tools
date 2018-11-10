@@ -6,7 +6,7 @@ import re
 outputs = []
 fileCuml = []
 best = {}; kurt = []; bests = []
-env, env1 = "seg_output/bbBreak/eos/", "seg_output/bbBreak/eos/"
+env, env1 = "seg_output/bbBreak/xrp/", "seg_output/bbBreak/xrp/"
 
 
 # 1. load all the logs in output
@@ -60,12 +60,12 @@ for fi, filename in enumerate(log_file_names):
 
 def similar(a, b):
     diff = abs(b - a)
-    tolerance = a * 0.0 # TODO: tune this percentage in
+    tolerance = a * 0.0001 # TODO: tune this percentage in
     return diff <= tolerance
 
 # we want to find instances where K, D, and bitchCunt are similar accross different timeframes/fidelities and currencies
 def close_enough(a1, a2):
-    if a1['filename'] == a2['filename']: # don't compare stuff in same file
+    if a1['filename'] == a2['filename'] or a1['filename'][7:13] != a2['filename'][7:13]: # don't compare stuff in same file
             return False
     simk = similar(a1['k'], a2['k'])
     simd = similar(a1['d'], a2['d'])
@@ -80,7 +80,7 @@ def clumpable(c1, c2):
 
 
 # compare every entry with every other entry for similarities
-similar_anals = []
+similar_anals, similar_anals2 = [], []
 for i, anal in enumerate(anals):
     for anal2 in anals[i + 1:]:
         if close_enough(anal, anal2):
@@ -98,16 +98,21 @@ def clump():
                 break #this could do better than break
             if clumpable(similar_anals[i], similar_anals[j]):
                 clumped = True
-                for anal in similar_anals[j]: # 2, 3, 4+ anals
-                    similar_anals[i].append(anal)
-                del similar_anals[j]
+                similar_anals2.append([similar_anals[i], similar_anals[j]])
+
+                # for anal in similar_anals[j]: # 2, 3, 4+ anals
+                #     similar_anals2.append(anal)
+                #del similar_anals[j]
     return clumped
 
-more_grouped = clump()
-while more_grouped:
-    more_grouped = clump()
-
-similar_anals = sorted(similar_anals, key=lambda k: k[0]['cuml'])
+#more_grouped = clump()
+# while more_grouped:
+#     more_grouped = clump()
+similar_anals = sorted(similar_anals, key=lambda k: (np.mean([k[0]['cuml'] / (k[0]['mdd'] + 2), k[1]['cuml'] / (k[1]['mdd'] + 2)]), np.mean([k[0]['len'], k[1]['len']])))
+#similar_anals2 = sorted(similar_anals2, key=lambda k: (k[0]['cuml'] / (k[0]['mdd'] + 2), k[0]['len']))
 
 for i in range(len(similar_anals)):
     print("\nsimilar_anal: ", similar_anals[i])
+
+# for i in range(len(similar_anals2)):
+#     print("\nsimilar_anal2: ", similar_anals2[i])
