@@ -138,6 +138,18 @@ def create_change_ohlcv_dataset(dataset, look_back):
             dataY.append((dataset[i+1][-1] - dataset[i][-1]) / dataset[i][-1])
     return np.array(dataX), np.array(dataY)
 
+def create_range_ohlcv_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        datum = []
+        if i > look_back:
+            for k in range(len(dataset[i-look_back:i])):
+                for j in range(len(dataset[i-look_back:i][k])):
+                    datum.append(dataset[i-look_back:i][k][j])
+            dataX.append(datum)
+            dataY.append(dataset[i+1][1:3])
+    return np.array(dataX), np.array(dataY)
+
 def create_ohlcv_dataset(dataset, look_back):
     dataX, dataY = [], []
     for i in range(len(dataset)-1):
@@ -172,10 +184,8 @@ print("order0:\n", ps[0])
 print("len(ps):", len(ps))
 print("order1[0]:\n", ps1[0])
 print("len(ps1):", len(ps1))
-X, Y = create_change_ohlcv_dataset(ps, 30)
-X1, Y1 = create_change_ohlcv_dataset(ps1, 30)
-print(np.random.shuffle(X))
-np.random.shuffle(X); np.random.shuffle(Y); np.random.shuffle(X1); np.random.shuffle(Y1)
+X, Y = create_binary_dataset(ps, 3)
+X1, Y1 = create_binary_dataset(ps1, 3)
 trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.1))], Y[:int(np.floor(len(X)/1.1))], X[int(np.floor(len(X)/1.1)):], Y[int(np.floor(len(X)/1.1)):]
 trainX1, trainY1, testX1, testY1 = X1[:int(np.floor(len(X1)/9.9))], Y1[:int(np.floor(len(X1)/9.9))], X1[int(np.floor(len(X1)/9.9)):], Y1[int(np.floor(len(X1)/9.9)):]
 print(testX[0], testY[0], "\n", testX1[0], testY1[0])
@@ -263,23 +273,19 @@ print(testX[0], testY[0], "\n", testX1[0], testY1[0])
 # model = svm.LinearSVR() # Mean Error Margin: 0.4214659266851305 Aggregate Binary Accuracy: 1045 / 1893 ABA%: 0.5520338087691495
 # model = linear_model.SGDClassifier() # Mean Error Margin: 0.5066032752245113 Aggregate Binary Accuracy: 934 / 1893 ABA%: 0.4933967247754886
 # model = linear_model.ElasticNet() # Mean Error Margin: 0.4729519810127314 Aggregate Binary Accuracy: 1305 / 1893 ABA%: 0.6893819334389857
-model = linear_model.Perceptron(max_iter=10000)
+model = linear_model.SGDClassifier()
 model.fit(trainX, trainY)
 
 for i in range(len(testX1)):
     sTXi = np.reshape(testX1[i], [1, -1])
     pY, rY = model.predict(sTXi), testY1[i]
-    errP = abs(pY - rY)
-    # if (rY > testY1[i-1] and pY > testY1[i-1]) or (rY < testY1[i-1] and pY < testY1[i-1]):
-    #     passes += 1
-    # else:
-    #     fails += 1
-    if (rY > 0 and pY > 0) or (rY < 0 and pY < 0):
+    errM = abs(pY - rY)
+    if errM < 0.49999:
         passes += 1
     else:
         fails += 1
-    errs.append(errP)
+    errs.append(errM)
     print("sTXi:", sTXi)
-    print("pY:", pY, "rY:", rY, "err %:", errP)
+    print("pY:", pY, "rY:", rY, "err %:", errM)
 
-print("\n\nMean % Error:", np.mean(errs), "Aggregate Binary Accuracy:", passes, "/", len(testY1), "ABA%:", passes / len(testY1))
+print("\n\nMean Error Margin:", np.mean(errs), "Aggregate Binary Accuracy:", passes, "/", len(testX), "ABA%:", passes / len(testX1))

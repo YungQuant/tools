@@ -138,6 +138,18 @@ def create_change_ohlcv_dataset(dataset, look_back):
             dataY.append((dataset[i+1][-1] - dataset[i][-1]) / dataset[i][-1])
     return np.array(dataX), np.array(dataY)
 
+def create_range_ohlcv_dataset(dataset, look_back):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-1):
+        datum = []
+        if i > look_back:
+            for k in range(len(dataset[i-look_back:i])):
+                for j in range(len(dataset[i-look_back:i][k])):
+                    datum.append(dataset[i-look_back:i][k][j])
+            dataX.append(datum)
+            dataY.append(dataset[i+1][1:3])
+    return np.array(dataX), np.array(dataY)
+
 def create_ohlcv_dataset(dataset, look_back):
     dataX, dataY = [], []
     for i in range(len(dataset)-1):
