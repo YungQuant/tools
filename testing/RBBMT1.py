@@ -3,7 +3,7 @@ import requests
 import pandas as pan
 import sklearn as sk
 
-exchange = ccxt.bitmex()
+exchange = ccxt.bitf
 exchange.apiKey = 'XisZrCcq4qDmLhs2T53MpFMJ'
 exchange.secret = 'ApEVapMkwqiEhV3FGr7NPjZHPG7P8xPAbtHxrbEs5RxA8NDz'
 

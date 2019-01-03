@@ -3,5 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$USER_HOME$/melo.capital" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/testing/gan-finance" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/testing/ganFin" vcs="Git" />
   </component>
 </project>

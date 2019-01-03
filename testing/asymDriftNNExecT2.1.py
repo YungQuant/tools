@@ -1,6 +1,7 @@
 import ccxt, os
 import sklearn as sk
 import requests, pandas as pan
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import svm, linear_model
 from sklearn.metrics import mean_squared_error
@@ -26,6 +27,13 @@ def get_CDD_data(currency, interval='1h'):
             linex = line.split(",")[2:6]
             data.append(linex)
     return reversed(data[2:])
+
+def plot(a):
+    y = np.arange(len(a))
+    plt.plot(y, a, 'g')
+    plt.ylabel('Price')
+    plt.xlabel('Time Periods')
+    plt.show()
 
 def load_bitmex_data(symbol, time_frequency, n_periods=500, baseURI='https://www.bitmex.com/api/v1'):
     '''
@@ -167,6 +175,77 @@ def create_ohlcv_dataset(dataset, look_back):
             dataY.append(dataset[i+1][-1])
     return np.array(dataX), np.array(dataY)
 
+def create_agg_ohlcv_dataset(dataset, look_back, curr=0):
+    dataX, dataY, finX = dataset, [], []
+    for z in range(len(dataset)-1):
+        for i in range(len(dataset[z])-1):
+            # datum = []
+            # if i > look_back:
+            #     for k in range(len(dataset[z][i-look_back:i])):
+            #         for j in range(len(dataset[z][i-look_back:i][k])):
+            #             datum.append(dataset[z][i-look_back:i][k][j])
+            #dataX.append(datum)
+
+            if z == curr: dataY.append(dataset[z][i+1][-1])
+
+    dataX, dataY = np.array(dataX), np.array(dataY)
+    print(f'preprocessing shapes: dataX {dataX.shape} dataY {dataY.shape}')
+    for t in range(len(dataX[0]) -1):
+        if len(dataX[0][t][:]) == 4 and len(dataX[1][t][:]) == 4 and len(dataX[2][t][:]) == 4 and len(dataX[3][t][:]) == 4 and len(dataX[4][t][:]) == 4 and len(dataX[5][t][:]) == 4 and len(dataX[6][t][:]) == 4 and len(dataX[7][t][:]) == 4 and len(dataX[8][t][:]) == 4:
+            datum1 = np.concatenate([dataX[0][t][:], dataX[1][t][:], dataX[2][t][:], dataX[3][t][:], dataX[4][t][:], dataX[5][t][:], dataX[6][t][:], dataX[7][t][:], dataX[8][t][:]])
+            finX.append(datum1)
+            #print(datum1, finX)
+    print(f'postprocessing shapes: dataX {np.array(finX).shape} dataY {dataY.shape}')
+    dataX = []
+    for x in range(len(finX)):
+        datum2 = []
+        if x > look_back:
+            for k in range(len(finX[x-look_back:x])):
+                for j in range(len(finX[x-look_back:x][k])):
+                    datum2.append(finX[x-look_back:x][k][j])
+            dataX.append(datum2)
+    print(f'post-postprocessing shapes: dataX {np.array(dataX).shape} dataY {dataY.shape}')
+    return np.array(dataX), np.array(dataY)
+
+def create_nerfed_agg_ohlcv_dataset(dataset, look_back, curr=0):
+    dataX, dataY, finX = dataset, [], []
+    for z in range(len(dataset)-1):
+        for i in range(len(dataset[z])-1):
+            # datum = []
+            # if i > look_back:
+            #     for k in range(len(dataset[z][i-look_back:i])):
+            #         for j in range(len(dataset[z][i-look_back:i][k])):
+            #             datum.append(dataset[z][i-look_back:i][k][j])
+            #dataX.append(datum)
+
+            if z == curr: dataY.append(dataset[z][i+1][-1])
+
+    dataX, dataY = np.array(dataX), np.array(dataY)
+    print(f'preprocessing shapes: dataX {dataX.shape} dataY {dataY.shape}')
+    for t in range(min([len(x) for x in dataX]) -1):
+        if len(dataX[0][t][:]) == 4 and len(dataX[1][t][:]) == 4 and len(dataX[2][t][:]) == 4 and len(dataX[3][t][:]) == 4 and len(dataX[4][t][:]) == 4:
+            datum1 = np.concatenate([dataX[0][t][:], dataX[1][t][:], dataX[2][t][:], dataX[3][t][:], dataX[4][t][:]])
+            finX.append(datum1)
+            #print(datum1, finX)
+    print(f'postprocessing shapes: dataX {np.array(finX).shape} dataY {dataY.shape}')
+    dataX = []
+    for x in range(len(finX)):
+        datum2 = []
+        if x > look_back:
+            for k in range(len(finX[x-look_back:x])):
+                for j in range(len(finX[x-look_back:x][k])):
+                    datum2.append(finX[x-look_back:x][k][j])
+            dataX.append(datum2)
+    print(f'post-postprocessing shapes: dataX {np.array(dataX).shape} dataY {dataY.shape}')
+    return np.array(dataX), np.array(dataY)
+
+def plot2(a, b):
+    y = np.arange(len(a))
+    plt.plot(y, a, 'g', y, b, 'r')
+    plt.ylabel('Price')
+    plt.xlabel('Time Periods')
+    plt.show()
+
 def create_ohlcv_dataset1(dataset, look_back):
     dataX, dataY = [], []
     for i in range(len(dataset)-1):
@@ -185,52 +264,74 @@ def disectPanda(panda):
         bodyParts.append([panda.ix[i, 'open'], panda.ix[i, 'high'], panda.ix[i, 'low'], panda.ix[i, 'close']])
     return bodyParts
 
+def get_agg_bitmex_data(currency_pairs):
+    data = []
+    for i in range(len(currency_pairs)):
+        datum = disectPanda(load_bitmex_data(currency_pairs[i], "hourly", n_periods=666))
+        data.append(datum)
+    return data
 
-currency_pairs, currencies = ["XBTUSD", "ETHUSD", "XRPU18", "TRXU18", "LTCU18", "EOSU18", "ADAU18", "BCHU18", "XRPU18"], ['ltc', 'xbt']
+def get_agg_cdd_data(currency_pairs):
+    data = []
+    for i in range(len(currency_pairs)):
+        orders = get_CDD_data(currency_pairs[i])
+        ps = [[float(order[0]), float(order[1]), float(order[2]), float(order[3])] for order in orders]
+        data.append(ps)
+    return np.array(data)
+
+
+# currency_pairs, currencies = ["XBTUSD", "ETHUSD", "XRPU18", "TRXU18", "LTCU18", "EOSU18", "ADAU18", "BCHU18"], ["BTCUSD", "ADABTC", "ETHUSD", "LTCBTC", "XRPBTC"]
+currency_pairs, currencies = ["XBTUSD", "ETHUSD", "XRPU18", "LTCU18", "BCHU18"], ["BTCUSD", "ADABTC", "ETHUSD", "LTCBTC", "XRPBTC"]
 errs, passes, fails = [], 0, 0
 
 #print(exchange.create_order(currency_pairs[0], ))
 #orders = exchange.fetch_ohlcv(symbol=currency_pairs[0], timeframe='1m')
+# orders1 =
+ps1 = np.array(get_agg_bitmex_data(currency_pairs))
 # orders1 = load_bitmex_data(currency_pairs[0], "hourly", n_periods=666)
-# orders = get_CDD_data("BTCUSD")
-orders1 = load_bitmex_data(currency_pairs[0], "hourly", n_periods=666)
-orders = get_CDD_data("BTCUSD")
+ps = np.array(get_agg_cdd_data(currencies))
 #print(orders)
 #ps = [order[-2] for order in orders if isFloat(order[-2])]
-ps = [[float(order[0]), float(order[1]), float(order[2]), float(order[3])] for order in orders]
-ps1 = disectPanda(orders1)
+
 print("order0:\n", ps[0])
-print("len(ps):", len(ps))
+print("shape(ps):", ps.shape)
 print("order1[0]:\n", ps1[0])
-print("len(ps1):", len(ps1))
+print("shape(ps1):", ps1.shape)
 Din = 30
-X, Y = create_ohlcv_dataset(ps, Din)
-X1, Y1 = create_ohlcv_dataset(ps1, Din)
-trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.1))], Y[:int(np.floor(len(X)/1.1))], X[int(np.floor(len(X)/1.1)):], Y[int(np.floor(len(X)/1.1)):]
+X, Y = create_nerfed_agg_ohlcv_dataset(ps, Din, curr=0)
+print("X0:\n", X[0])
+print("shape(X):", X.shape)
+X1, Y1 = create_nerfed_agg_ohlcv_dataset(ps1, Din, curr=0)
+print("X10:\n", X1[0])
+print("shape(X1):", X1.shape)
+trainX, trainY, testX, testY = X[:int(np.floor(len(X)/1.3))], Y[:int(np.floor(len(X)/1.3))], X[int(np.floor(len(X)/1.3)):], Y[int(np.floor(len(X)/1.3)):]
 trainX1, trainY1, testX1, testY1 = X1[:int(np.floor(len(X1)/9.9))], Y1[:int(np.floor(len(X1)/9.9))], X1[int(np.floor(len(X1)/9.9)):], Y1[int(np.floor(len(X1)/9.9)):]
-print(testX[0], testY[0], "\n", testX1[0], testY1[0])
+print(testX[0], testY[0])
+print("\n", testX1[0], testY1[0])
+plot(trainY)
+plot(testY1)
 
 ''' !!HIGHLIGHTS!!'''
 
 # scaler = MinMaxScaler(feature_range=(-1, 1))
 # trainX = scaler.fit_transform(trainX)
 trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
-testX1 = np.reshape(testX1, (testX1.shape[0], 1, testX1.shape[1]))
+#testX1 = np.reshape(testX1, (testX1.shape[0], 1, testX1.shape[1]))
 # print("scaled training x[-1], y[-1]", trainX[-1], trainY[-1])
 # print("trainX shape", trainX.shape)
 model = Sequential()
-model.add(Dense(Din*4, input_shape=(1, Din*4), activation='selu'))
-model.add(Dense(Din*4, activation='relu'))
-model.add(LSTM(Din*4, activation='selu', return_sequences=False))
+model.add(Dense(Din*4*5, input_shape=(1, Din*4*5), activation='selu'))
+model.add(Dense(Din*4*5, activation='relu'))
+model.add(LSTM(Din*4*5, activation='selu', return_sequences=False))
 model.add(Dropout(0.005))
 #model.add(Flatten())
 model.add(Dense(1, activation='linear'))
-model.compile(loss="mse", optimizer=keras.optimizers.Adam(lr=0.00001, epsilon=99, decay=0.000001, amsgrad=False), metrics=['accuracy'])
-model.fit(trainX, trainY, nb_epoch=1000, batch_size=500, verbose=1)
+model.compile(loss="mse", optimizer=keras.optimizers.Adam(lr=0.0001, epsilon=42, decay=0.0001, amsgrad=False), metrics=['accuracy'])
+model.fit(trainX, trainY, nb_epoch=1000, batch_size=100, verbose=1)
 
 for i in range(len(testX1)):
     #sTXi = np.reshape(testX1[i], [1, -1])
-    sTXi = np.reshape(testX1[i], (testX1[i].shape[0], 1, testX1[i].shape[1]))
+    sTXi = np.reshape(testX1[i], (1, 1, testX1[i].shape[0]))
     # sTXi = testX1[i]
     pY, rY = model.predict(sTXi), testY1[i]
     errM = abs(pY - rY) / rY
