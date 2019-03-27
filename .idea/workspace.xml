@@ -2,27 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="91b456ee-4934-4aaf-a4c1-0d1e8e9573c3" name="Default" comment="">
-      <change afterPath="$USER_HOME$/prop/srcs/version1.1/elastic2.1.1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT2.1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT3.1.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/bitForex.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/ganFin/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/ganS0.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testing/ganS1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/information/scrapers/bitmexSecondScraper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/hsdb/hsdbModel0.py" afterDir="false" />
       <change beforePath="$USER_HOME$/melo.capital/.idea/melo.capital.iml" beforeDir="false" afterPath="$USER_HOME$/melo.capital/.idea/melo.capital.iml" afterDir="false" />
-      <change beforePath="$USER_HOME$/prop/srcs/utils/logParser3.py" beforeDir="false" afterPath="$USER_HOME$/prop/srcs/utils/logParser3.py" afterDir="false" />
-      <change beforePath="$USER_HOME$/prop/srcs/version1.1/elastic2.1.py" beforeDir="false" afterPath="$USER_HOME$/prop/srcs/version1.1/elastic2.1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/tools.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tools.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/RBBMT1.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/RBBMT1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/asymDriftNNExecT1.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/asymDriftRegExecT3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/asymDriftRegExecT4.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/ganFin/gen_adv_net.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/ganFin/gen_adv_net.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" beforeDir="false" afterPath="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,36 +19,39 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="c" value="1" />
           <entry key="csv" value="1" />
-          <entry key="py" value="48" />
+          <entry key="py" value="77" />
           <entry key="txt" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="C++" value="1" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="48" />
+          <entry key="Python" value="77" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="py" value="3445" />
+          <entry key="py" value="4358" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="3445" />
+          <entry key="Python" value="4358" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -73,22 +60,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testing/ganS1.py">
+        <entry file="file://$PROJECT_DIR$/testing/hsdb/hsdbModel0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="30" column="93" selection-start-line="30" selection-start-column="93" selection-end-line="30" selection-end-column="93" />
-              <folding>
-                <element signature="e#1#42#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT4.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5235">
-              <caret line="360" selection-start-line="360" selection-end-line="360" selection-end-column="25" />
+            <state relative-caret-position="96">
+              <caret line="70" column="42" lean-forward="true" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -96,63 +71,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/prop/srcs/server_utils/MM/impactMM1.2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="223" lean-forward="true" selection-start-line="223" selection-end-line="223" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/testing/log_crawler.py">
+        <entry file="file://$USER_HOME$/prop/srcs/server_utils/angels/angel1.3.1_unhedged.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" selection-start-line="23" selection-end-line="23" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testing/logParser1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret lean-forward="true" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/prop/srcs/version1.1/elastic2.1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6915">
-              <caret line="471" column="8" selection-start-line="471" selection-start-column="8" selection-end-line="471" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/prop/srcs/version1.1/elastic2.1.1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3015">
-              <caret line="211" selection-start-line="211" selection-end-line="217" selection-end-column="43" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
+            <state relative-caret-position="-5109" />
           </provider>
         </entry>
       </file>
@@ -187,13 +109,11 @@
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$USER_HOME$/prop" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$USER_HOME$/prop/srcs/version1.0/mlsp3.py" />
-        <option value="$USER_HOME$/prop/srcs/env/envTest1.3.1.py" />
         <option value="$PROJECT_DIR$/information/alerts/crypto_twilio1.py" />
         <option value="$PROJECT_DIR$/testing/why_hugo_is_stupid1.py" />
         <option value="$PROJECT_DIR$/execution/MM_SVM.py" />
@@ -239,16 +159,20 @@
         <option value="$USER_HOME$/prop/srcs/utils/logParser3.py" />
         <option value="$USER_HOME$/prop/srcs/version1.1/elastic2.1.1.py" />
         <option value="$USER_HOME$/prop/srcs/version1.1/elastic2.1.py" />
-        <option value="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" />
         <option value="$PROJECT_DIR$/testing/ganS0.py" />
         <option value="$PROJECT_DIR$/testing/ganFin/gen_adv_net.py" />
         <option value="$PROJECT_DIR$/testing/ganS1.py" />
+        <option value="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" />
+        <option value="$PROJECT_DIR$/information/scrapers/bitmexSecondScraper.py" />
+        <option value="$PROJECT_DIR$/testing/hsdb/hsdbModel0.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1680" />
-    <option name="height" value="1050" />
+    <option name="x" value="284" />
+    <option name="y" value="22" />
+    <option name="width" value="1389" />
+    <option name="height" value="1028" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -256,54 +180,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="execution" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="execution" type="462c0819:PsiDirectoryNode" />
-              <item name="kucoin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="information" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="information" type="462c0819:PsiDirectoryNode" />
-              <item name="alerts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="testing" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tools" type="462c0819:PsiDirectoryNode" />
-              <item name="testing" type="462c0819:PsiDirectoryNode" />
-              <item name="ganFin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
               <item name="prop" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prop" type="462c0819:PsiDirectoryNode" />
-              <item name="cDDdata" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="tools" type="b2602c69:ProjectViewProjectNode" />
@@ -321,37 +204,12 @@
               <item name="prop" type="462c0819:PsiDirectoryNode" />
               <item name="srcs" type="462c0819:PsiDirectoryNode" />
               <item name="server_utils" type="462c0819:PsiDirectoryNode" />
-              <item name="MM" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prop" type="462c0819:PsiDirectoryNode" />
-              <item name="srcs" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prop" type="462c0819:PsiDirectoryNode" />
-              <item name="srcs" type="462c0819:PsiDirectoryNode" />
-              <item name="version1.0" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prop" type="462c0819:PsiDirectoryNode" />
-              <item name="srcs" type="462c0819:PsiDirectoryNode" />
-              <item name="version1.1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tools" type="b2602c69:ProjectViewProjectNode" />
-              <item name="prop" type="462c0819:PsiDirectoryNode" />
-              <item name="srcs" type="462c0819:PsiDirectoryNode" />
-              <item name="version1.3" type="462c0819:PsiDirectoryNode" />
+              <item name="angels" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -378,7 +236,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ganS0">
+  <component name="RunManager" selected="Python.bitmexSecondScraper">
     <configuration name="asymDriftNNExecT4" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="tools" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -392,6 +250,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testing/asymDriftNNExecT4.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="bitmexSecondScraper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="tools" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/information/scrapers" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/information/scrapers/bitmexSecondScraper.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -463,41 +342,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="logParser3" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="prop" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../prop/srcs/utils" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../prop/srcs/utils/logParser3.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python.logParser3" />
       <item itemvalue="Python.elastic2.1" />
       <item itemvalue="Python.elastic2.1.1" />
       <item itemvalue="Python.asymDriftNNExecT4" />
       <item itemvalue="Python.ganS0" />
+      <item itemvalue="Python.bitmexSecondScraper" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.bitmexSecondScraper" />
         <item itemvalue="Python.ganS0" />
         <item itemvalue="Python.asymDriftNNExecT4" />
         <item itemvalue="Python.elastic2.1" />
         <item itemvalue="Python.elastic2.1.1" />
-        <item itemvalue="Python.logParser3" />
       </list>
     </recent_temporary>
   </component>
@@ -523,7 +381,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32914287" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24387754" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24183674" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -562,75 +420,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/prop/srcs/version1.0/horizontal_scaling1.0.py" />
-    <entry file="file://$USER_HOME$/melo.capital/readme.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1TestBed1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-301">
-          <caret line="277" column="42" selection-start-line="277" selection-start-column="42" selection-end-line="277" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-400">
-          <caret line="231" column="93" lean-forward="true" selection-start-line="231" selection-start-column="14" selection-end-line="231" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/execution/cryptopiaAutoBuyAsk.py" />
-    <entry file="file://$USER_HOME$/melo.capital/bid_above_ask_sweep.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1575">
-          <caret line="111" column="34" selection-end-line="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/melo.capital/baas1.0.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="115" selection-start-line="115" selection-end-line="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/melo.capital/baas1.0_testBed1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1TestBed2_fuckingPaulEdition.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1276">
-          <caret line="292" column="87" selection-start-line="292" selection-start-column="13" selection-end-line="292" selection-end-column="101" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/rscv1_lin(T2).py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftRegExecT2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1709">
-          <caret line="150" column="43" selection-start-line="150" selection-start-column="43" selection-end-line="150" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftRegExecT4.py" />
-    <entry file="file://$PROJECT_DIR$/testing/RBBMT1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/execution/cryptopia/cryptopiaAutoBuyAsk.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -708,35 +497,7 @@
     <entry file="file://$USER_HOME$/prop/output/elastic2.1MEXOhlcvDe-Fucked_1hXBTUSD_12.8.18_output.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT2.1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4350">
-          <caret line="290" column="72" lean-forward="true" selection-start-line="290" selection-start-column="72" selection-end-line="290" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2985">
-          <caret line="199" selection-start-line="199" selection-end-line="199" selection-end-column="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="273" column="41" selection-start-line="273" selection-start-column="41" selection-end-line="273" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testing/ganS0_gen.py" />
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftRegExecT1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="274" column="65" lean-forward="true" selection-start-line="274" selection-start-column="65" selection-end-line="274" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testing/gan-finance/gen_adv_net.py" />
     <entry file="file://$PROJECT_DIR$/testing/ganFin/gen_adv_net.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -750,27 +511,47 @@
         <state relative-caret-position="-428" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/information/kucoinPosFeed1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2228" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT3.1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4575">
-          <caret line="316" column="66" selection-end-line="348" selection-end-column="128" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testing/ganS0.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2460">
           <caret line="175" column="62" selection-start-line="175" selection-start-column="62" selection-end-line="175" selection-end-column="62" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/execution/kucoin/herAsshole1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1205" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/utils/logParser3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/logParser3.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/historical/cip1.1.c">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/historical/cip3.1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="57" column="37" lean-forward="true" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/server_utils/MM/impactMM1.2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="223" selection-start-line="223" selection-end-line="223" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/why_hugo_is_stupid1.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/testing/ganS1.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -782,22 +563,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT4.py">
+    <entry file="file://$PROJECT_DIR$/testing/logParser1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5235">
-          <caret line="360" selection-start-line="360" selection-end-line="360" selection-end-column="25" />
+        <state>
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/version1.1/elastic2.1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6915">
-          <caret line="471" column="8" selection-start-line="471" selection-start-column="8" selection-end-line="471" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -812,56 +582,161 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/execution/kucoin/herAsshole1.py">
+    <entry file="file://$PROJECT_DIR$/information/scrapers/bitmexSecondScraper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1205">
+        <state relative-caret-position="60">
+          <caret line="4" column="7" selection-start-line="4" selection-end-line="4" selection-end-column="99" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/utils/logParser3.py">
+    <entry file="file://$PROJECT_DIR$/testing/rscv1_lin(T2).py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-1494" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testing/logParser3.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/prop/srcs/server_utils/MM/impactMM1.2.py">
+    <entry file="file://$USER_HOME$/prop/srcs/version1.1/elastic2.1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="223" lean-forward="true" selection-start-line="223" selection-end-line="223" />
+        <state relative-caret-position="1458">
+          <caret line="471" column="8" selection-start-line="471" selection-start-column="8" selection-end-line="471" selection-end-column="8" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/logParser1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testing/log_crawler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
+        <state relative-caret-position="203">
           <caret line="23" selection-start-line="23" selection-end-line="23" selection-end-column="32" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/information/scrapers/bitmexMinuteScraper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/information/scrapers/bookScraper1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1721">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/information/coinbene.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1779">
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/information/kucoinPosFeed1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1955" />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/version1.0/mani1TestBed1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="262" column="93" lean-forward="true" selection-start-line="262" selection-start-column="4" selection-end-line="262" selection-end-column="93" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/information/alerts/bookScanner1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2778">
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="382" column="60" lean-forward="true" selection-end-line="398" selection-end-column="267" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <marker date="1550547111368" expanded="true" signature="1088:1487" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-444">
+          <caret line="174" column="56" lean-forward="true" selection-start-line="174" selection-start-column="56" selection-end-line="174" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT2.1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="290" column="72" lean-forward="true" selection-start-line="290" selection-start-column="72" selection-end-line="290" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="273" column="41" selection-start-line="273" selection-start-column="41" selection-end-line="273" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftNNExecT3.1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="688">
+          <caret line="316" column="66" selection-end-line="348" selection-end-column="128" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftRegExecT1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="274" column="65" lean-forward="true" selection-start-line="274" selection-start-column="65" selection-end-line="274" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/asymDriftRegExecT2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="150" column="43" selection-start-line="150" selection-start-column="43" selection-end-line="150" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testing/hsdb/hsdbModel0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="70" column="42" lean-forward="true" selection-start-line="70" selection-start-column="42" selection-end-line="70" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/prop/srcs/server_utils/angels/angel1.3.1_unhedged.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5109" />
       </provider>
     </entry>
   </component>

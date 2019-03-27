@@ -28,6 +28,20 @@ def get_CDD_data(currency, interval='1h'):
             data.append(linex)
     return reversed(data[2:])
 
+def tokyoDrift(currency="XBTUSD", dump="01"):
+    path = f'../../tokyoScpDump/output/dump{dump}/bitmex_{currency}_1min.txt'
+    data = []
+    if os.path.isfile(path) == False:
+        print(f'could not source {path} data')
+    else:
+        fileP = open(path, "r")
+        lines = fileP.readlines()
+        for i, line in enumerate(lines):
+            linex = line.split(",")[2:6]
+            data.append(linex)
+    return reversed(data[2:])
+
+
 def load_bitmex_data(symbol, time_frequency, n_periods=500, baseURI='https://www.bitmex.com/api/v1'):
     '''
     request = requests.get('https://www.bitmex.com/api/v1/trade/bucketed?binSize=1m&partial=false&symbol=xbt&count=500&reverse=true')
